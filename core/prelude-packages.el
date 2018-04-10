@@ -43,6 +43,9 @@
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/") t))
 
+(setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+                         ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+
 ;; load the pinned packages
 (let ((prelude-pinned-packages-file (expand-file-name "prelude-pinned-packages.el" prelude-dir)))
   (if (file-exists-p prelude-pinned-packages-file)
