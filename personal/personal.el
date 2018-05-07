@@ -4,6 +4,10 @@
 ;; (prelude-require-package 'solarized-theme)
 ;; (setq prelude-theme 'solarized-light)
 
+(add-to-list 'default-frame-alist '(height . 42))
+(add-to-list 'default-frame-alist '(width . 120))
+
+(prelude-require-package 'spacemacs-theme)
 
 (prelude-require-package 'use-package)
 
@@ -104,6 +108,94 @@
 
 
 ;;;
+;; Project Managemen
+;;;
+
+(prelude-require-package 'neotree)
+
+(setq neo-smart-open t)
+(setq projectile-switch-project-action 'neotree-projectile-action)
+
+(defun neotree-project-dir ()
+  "Open NeoTree using the git root."
+  (interactive)
+  (let ((project-dir (projectile-project-root))
+        (file-name (buffer-file-name)))
+    (neotree-toggle)
+    (if project-dir
+        (if (neo-global--window-exists-p)
+            (progn
+              (neotree-dir project-dir)
+              (neotree-find file-name)))
+      (message "Could not find git project root."))))
+
+(global-set-key [f8] 'neotree-project-dir)
+
+(setq-default neo-show-hidden-files t)
+
+
+;;;
+;; Web Frontend
+;;;
+(prelude-require-package 'emmet-mode)
+
+(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+(add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+
+(prelude-require-package 'web-beautify)
+
+(prelude-require-package 'js2-mode)
+(prelude-require-package 'js2-refactor)
+(prelude-require-package 'xref-js2)
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+;; Better imenu
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+
+(add-hook 'js2-mode-hook #'js2-refactor-mode)
+(js2r-add-keybindings-with-prefix "C-c C-r")
+(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+
+;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
+;; unbind it.
+(define-key js-mode-map (kbd "M-.") nil)
+
+(add-hook 'js2-mode-hook (lambda ()
+                           (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+
+(prelude-require-package 'company-tern)
+
+(add-to-list 'company-backends 'company-tern)
+(add-hook 'js2-mode-hook (lambda ()
+                           (tern-mode)
+                           (company-mode)))
+
+
+(prelude-require-package 'skewer-mode)
+
+(skewer-setup)
+
+;;;
+;; Python
+;;;
+
+(prelude-require-package 'virtualenvwrapper)
+(venv-initialize-interactive-shells) ;; if you want interactive shell support
+(setq venv-location "~/.virtualenvs/")
+
+
+
+;;;
+;; Misc
+;;;
+
+(prelude-require-package 'nyan-mode)
+
+(nyan-mode)
+
+
+;;;
 ;; LaTeX
 ;;;
 
@@ -129,20 +221,20 @@
             (imenu-add-menubar-index)
             (define-key LaTeX-mode-map (kbd "TAB") 'TeX-complete-symbol)))
 ; set pdf view tool
-(setq TeX-view-program-list '(("Evince" "evince %o")))
-(cond
- ((eq system-type 'windows-nt)
-  (add-hook 'LaTeX-mode-hook
-            (lambda ()
-              (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
-                                                 (output-dvi "Yap"))))))
+;; (setq TeX-view-program-list '(("Evince" "evince %o")))
+;; (cond
+;;  ((eq system-type 'windows-nt)
+;;   (add-hook 'LaTeX-mode-hook
+;;             (lambda ()
+;;               (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
+;;                                                  (output-dvi "Yap"))))))
 
- ((eq system-type 'gnu/linux)
-  (add-hook 'LaTeX-mode-hook
-            (lambda ()
-              (setq TeX-view-program-selection '((output-pdf "Evince")
-                                                 (output-dvi "Evince")))))))
-; XeLaTeX
+;;  ((eq system-type 'gnu/linux)
+;;   (add-hook 'LaTeX-mode-hook
+;;             (lambda ()
+;;               (setq TeX-view-program-selection '((output-pdf "Evince")
+;;                                                  (output-dvi "Evince")))))))
+;; ; XeLaTeX
 (add-hook 'LaTeX-mode-hook (lambda()
     (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
     (setq TeX-command-default "XeLaTeX")
