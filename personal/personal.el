@@ -108,7 +108,7 @@
 
 
 ;;;
-;; Project Managemen
+;; Project Management
 ;;;
 
 (prelude-require-package 'neotree)
@@ -147,10 +147,11 @@
 (prelude-require-package 'js2-mode)
 (prelude-require-package 'js2-refactor)
 (prelude-require-package 'xref-js2)
+(prelude-require-package 'json-mode)
+
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
-;; Better imenu
 (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
 
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
@@ -164,17 +165,27 @@
 (add-hook 'js2-mode-hook (lambda ()
                            (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
+(prelude-require-package 'web-beautify)
+
+(eval-after-load 'js2-mode
+  '(define-key js2-mode-map (kbd "C-c b") 'web-beautify-js))
+
+
 (prelude-require-package 'company-tern)
 
 (add-to-list 'company-backends 'company-tern)
 (add-hook 'js2-mode-hook (lambda ()
-                           (tern-mode)
+                           (ternmode)
                            (company-mode)))
 
 
 (prelude-require-package 'skewer-mode)
 
 (skewer-setup)
+
+(prelude-require-package 'indium)
+
+
 
 ;;;
 ;; Python
@@ -190,9 +201,21 @@
 ;; Misc
 ;;;
 
+(prelude-require-package 'elfeed)
+
+(setq elfeed-feeds
+      '("http://nullprogram.com/feed/"
+        "http://planet.emacsen.org/atom.xml"))
+
+
+(global-set-key (kbd "C-x w") 'elfeed)
+
 (prelude-require-package 'nyan-mode)
 
 (nyan-mode)
+
+(prelude-require-package 'whitespace-cleanup-mode)
+
 
 
 ;;;
