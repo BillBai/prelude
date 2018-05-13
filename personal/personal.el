@@ -108,6 +108,24 @@
 
 
 ;;;
+;; C / C++
+;;;
+(prelude-require-package 'irony)
+(prelude-require-package 'company-irony)
+
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+(prelude-require-package 'yasnippet)
+(prelude-require-package 'auto-complete-c-headers)
+
+(yas-global-mode 1)
+
+
+;;;
 ;; Project Management
 ;;;
 
