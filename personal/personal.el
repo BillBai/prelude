@@ -99,6 +99,10 @@
    ;; ("M-j" . pyim-convert-code-at-point) ;与 pyim-probe-dynamic-english 配合
    ("C-;" . pyim-delete-word-from-personal-buffer)))
 
+(prelude-require-package 'cnfonts)
+
+(cnfonts-enable)
+
 ;;;
 ;; Org
 ;;;
@@ -175,15 +179,8 @@
 
 (add-to-list 'company-backends 'company-tern)
 (add-hook 'js2-mode-hook (lambda ()
-                           (ternmode)
+                           (tern-mode)
                            (company-mode)))
-
-
-(prelude-require-package 'skewer-mode)
-
-(skewer-setup)
-
-(prelude-require-package 'indium)
 
 
 
@@ -223,46 +220,5 @@
 ;;;
 
 (prelude-require-package 'auctex)
-
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
-(mapc (lambda (mode)
-(add-hook 'LaTeX-mode-hook mode))
-      (list 'auto-complete-mode
-   'auto-fill-mode
-   'LaTeX-math-mode
-   'turn-on-reftex
-   'linum-mode))
-(add-hook 'LaTeX-mode-hook
-          (lambda ()
-            (setq TeX-auto-untabify t     ; remove all tabs before saving
-                  TeX-engine 'xelatex       ; use xelatex default
-                  TeX-show-compilation t) ; display compilation windows
-            (TeX-global-PDF-mode t)       ; PDF mode enable, not plain
-            (setq TeX-save-query nil)
-            (imenu-add-menubar-index)
-            (define-key LaTeX-mode-map (kbd "TAB") 'TeX-complete-symbol)))
-; set pdf view tool
-;; (setq TeX-view-program-list '(("Evince" "evince %o")))
-;; (cond
-;;  ((eq system-type 'windows-nt)
-;;   (add-hook 'LaTeX-mode-hook
-;;             (lambda ()
-;;               (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
-;;                                                  (output-dvi "Yap"))))))
-
-;;  ((eq system-type 'gnu/linux)
-;;   (add-hook 'LaTeX-mode-hook
-;;             (lambda ()
-;;               (setq TeX-view-program-selection '((output-pdf "Evince")
-;;                                                  (output-dvi "Evince")))))))
-;; ; XeLaTeX
-(add-hook 'LaTeX-mode-hook (lambda()
-    (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
-    (setq TeX-command-default "XeLaTeX")
-    (setq TeX-save-query  nil )
-    (setq TeX-show-compilation f)
-    ))
 
 ;;; personal.el ends here
