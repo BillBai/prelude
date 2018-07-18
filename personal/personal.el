@@ -1,19 +1,39 @@
-;;; Theme
-;; (disable-theme 'zenburn)
+;; save/restore opened files
+(desktop-save-mode 1)
 
-;; (prelude-require-package 'solarized-theme)
-;; (setq prelude-theme 'solarized-light)
+;; set font
+(cond
+ ((string-equal system-type "windows-nt") ; Microsoft Windows
+  (when (member "Fira Code" (font-family-list))
+    (add-to-list 'initial-frame-alist '(font . "Fira Code-16"))
+    (add-to-list 'default-frame-alist '(font . "Fira Code-16"))))
+ ((string-equal system-type "darwin") ; macOS
+  (when (member "Fira Code" (font-family-list))
+    (add-to-list 'initial-frame-alist '(font . "Fira Code-16"))
+    (add-to-list 'default-frame-alist '(font . "Fira Code-16"))))
+ ((string-equal system-type "gnu/linux") ; linux
+  (when (member "DejaVu Sans Mono" (font-family-list))
+    (add-to-list 'initial-frame-alist '(font . "DejaVu Sans Mono-16"))
+    (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-16")))))
+
+(prelude-require-package 'cnfonts)
+
+(cnfonts-enable)
 
 (add-to-list 'default-frame-alist '(height . 42))
-(add-to-list 'default-frame-alist '(width . 120))
+(add-to-list 'default-frame-alist '(width . 123))
 
 (prelude-require-package 'spacemacs-theme)
+(prelude-require-package 'material-theme)
+
+(setq prelude-theme 'material)
+(load-theme 'material)
 
 (prelude-require-package 'use-package)
 
 (prelude-require-package 'quelpa)
 
-(quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
+;; (quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
 
 
 ;;;
@@ -22,15 +42,6 @@
 
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
-(set-buffer-file-coding-system 'utf-8-unix)
-(set-clipboard-coding-system 'utf-8-unix)
-(set-file-name-coding-system 'utf-8-unix)
-(set-keyboard-coding-system 'utf-8-unix)
-(set-next-selection-coding-system 'utf-8-unix)
-(set-selection-coding-system 'utf-8-unix)
-(set-terminal-coding-system 'utf-8-unix)
-(setq locale-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
 
 
 ;;;;
@@ -44,6 +55,7 @@
 
 (pyim-greatdict-enable)
 
+(prelude-require-package 'posframe)
 
 (use-package pyim
   :ensure nil
@@ -86,7 +98,7 @@
   ;; 使用 pupup-el 来绘制选词框, 如果用 emacs26, 建议设置
   ;; 为 'posframe, 速度很快并且菜单不会变形，不过需要用户
   ;; 手动安装 posframe 包。
-  ;; (setq pyim-page-tooltip 'popup)
+  (setq pyim-page-tooltip 'posframe)
 
   ;; 选词框显示5个候选词
   (setq pyim-page-length 7)
@@ -99,9 +111,9 @@
    ;; ("M-j" . pyim-convert-code-at-point) ;与 pyim-probe-dynamic-english 配合
    ("C-;" . pyim-delete-word-from-personal-buffer)))
 
-(prelude-require-package 'cnfonts)
 
-(cnfonts-enable)
+
+
 
 ;;;
 ;; Org
@@ -276,13 +288,13 @@
 
 (global-set-key (kbd "C-x w") 'elfeed)
 
+;; nyan nyan nyan~~~
 (prelude-require-package 'nyan-mode)
-
 (nyan-mode)
+(nyan-start-animation)
+
 
 (prelude-require-package 'whitespace-cleanup-mode)
-
-
 
 ;;;
 ;; LaTeX
@@ -290,9 +302,12 @@
 
 (prelude-require-package 'auctex)
 (add-hook 'LaTeX-mode-hook (lambda()
-                             (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
+                             (add-to-list
+                              'TeX-command-list
+                              '("XeLaTeX" "%`xelatex%(mode)%' %t"
+                                TeX-run-TeX nil t))
                              (setq TeX-command-default "XeLaTeX")
                              (setq TeX-save-query  nil)
                              (setq TeX-show-compilation t)))
 
-;;; personal.el ends here
+;;; personal.el ends here.
