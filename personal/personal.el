@@ -86,7 +86,7 @@
   ;; 使用 pupup-el 来绘制选词框, 如果用 emacs26, 建议设置
   ;; 为 'posframe, 速度很快并且菜单不会变形，不过需要用户
   ;; 手动安装 posframe 包。
-  (setq pyim-page-tooltip 'popup)
+  ;; (setq pyim-page-tooltip 'popup)
 
   ;; 选词框显示5个候选词
   (setq pyim-page-length 7)
@@ -220,5 +220,10 @@
 ;;;
 
 (prelude-require-package 'auctex)
+(add-hook 'LaTeX-mode-hook (lambda()
+                             (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
+                             (setq TeX-command-default "XeLaTeX")
+                             (setq TeX-save-query  nil)
+                             (setq TeX-show-compilation t)))
 
 ;;; personal.el ends here
