@@ -5,12 +5,17 @@
 (when (display-graphic-p)
   (scroll-bar-mode -1))
 
+;; use ibuffer instead of helm-buffer-list
+;; restore from the helm everywhere key binding
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 
 (recentf-mode 1) ; keep a list of recently opened files
 ;; set F7 to list recently opened file
 (global-set-key (kbd "<f7>") 'recentf-open-files)
 
 (global-set-key (kbd "<f5>") 'execute-extended-command)
+
 
 ;; set font
 (cond
