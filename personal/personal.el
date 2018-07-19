@@ -1,11 +1,16 @@
 ;; save/restore opened files
 (desktop-save-mode 1)
 
+;; disable scroll bar
+(when (display-graphic-p)
+  (scroll-bar-mode -1))
+
 
 (recentf-mode 1) ; keep a list of recently opened files
 ;; set F7 to list recently opened file
 (global-set-key (kbd "<f7>") 'recentf-open-files)
 
+(global-set-key (kbd "<f5>") 'execute-extended-command)
 
 ;; set font
 (cond
@@ -33,7 +38,7 @@
 (prelude-require-package 'material-theme)
 
 (setq prelude-theme 'material)
-(load-theme 'material)
+(load-theme 'material t)
 
 (prelude-require-package 'use-package)
 
@@ -118,9 +123,6 @@
    ("C-;" . pyim-delete-word-from-personal-buffer)))
 
 
-
-
-
 ;;;
 ;; Org
 ;;;
@@ -128,6 +130,23 @@
 (eval-after-load "org"
   '(require 'ox-md nil t))
 
+(progn
+  ;; org-mode setup
+
+  ;; when opening a org file, don't collapse headings
+  (setq org-startup-folded nil)
+
+  ;; wrap long lines. don't let it disappear to the right
+  (setq org-startup-truncated nil)
+
+  ;; when in a url link, enter key should open it
+  (setq org-return-follows-link t)
+
+  ;; make org-mode” syntax color embedded source code
+  (setq org-src-fontify-natively t)
+
+  ;;
+  )
 
 ;;;
 ;; C / C++
