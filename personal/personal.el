@@ -1,6 +1,12 @@
 ;; save/restore opened files
 (desktop-save-mode 1)
 
+
+(recentf-mode 1) ; keep a list of recently opened files
+;; set F7 to list recently opened file
+(global-set-key (kbd "<f7>") 'recentf-open-files)
+
+
 ;; set font
 (cond
  ((string-equal system-type "windows-nt") ; Microsoft Windows
