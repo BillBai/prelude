@@ -1,7 +1,13 @@
 ;; save/restore opened files
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
-;; disable scroll bar
+(setq projectile-keymap-prefix (kbd "C-c p"))
+
+;; linum mode on
+(linum-mode)
+
+
+;; disable scroll bar for GUI
 (when (display-graphic-p)
   (scroll-bar-mode -1))
 
@@ -50,7 +56,7 @@
 
 (prelude-require-package 'quelpa)
 
-;; (quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
+(quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
 
 
 ;;;
@@ -67,11 +73,6 @@
 
 (prelude-require-package 'pyim)
 (prelude-require-package 'pyim-basedict)
-
-(pyim-basedict-enable)
-
-(pyim-greatdict-enable)
-
 (prelude-require-package 'posframe)
 
 (use-package pyim
@@ -82,6 +83,9 @@
   (use-package pyim-basedict
     :ensure nil
     :config (pyim-basedict-enable))
+  (use-package pyim-greatdict
+    :ensure nil
+    :config (pyim-greatdict-enable))
 
   ;; 五笔用户使用 wbdict 词库
   ;; (use-package pyim-wbdict
@@ -120,9 +124,7 @@
   ;; 选词框显示7个候选词
   (setq pyim-page-length 7)
 
-  ;; 让 Emacs 启动时自动加载 pyim 词库
-  (add-hook 'emacs-startup-hook
-            #'(lambda () (pyim-restart-1 t)))
+
   :bind
   (("M-j" . pyim-convert-code-at-point) ;与 pyim-probe-dynamic-english 配合
    ("C-;" . pyim-delete-word-from-personal-buffer)))
@@ -148,10 +150,8 @@
   (setq org-return-follows-link t)
 
   ;; make org-mode” syntax color embedded source code
-  (setq org-src-fontify-natively t)
+  (setq org-src-fontify-natively t))
 
-  ;;
-  )
 
 ;;;
 ;; C / C++
@@ -257,26 +257,65 @@
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
 
-(prelude-require-package 'web-beautify)
+(prelude-require-packages '(flycheck
+                            ggtags
+                            helm-gtags
+                            js-doc
+                            js2-mode
+                            js2-refactor
+                            xref-js2
+                            json-mode
+                            json-snatcher
+                            tern
+                            web-beautify
+                            skewer-mode
+                            livid-mode))
 
-(prelude-require-package 'js2-mode)
-(prelude-require-package 'js2-refactor)
-(prelude-require-package 'json-mode)
-
-
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-
-(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+(require 'tern)
 
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
 (js2r-add-keybindings-with-prefix "C-c C-r")
 (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
 
+;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
+;; unbind it.
+(define-key js-mode-map (kbd "M-.") nil)
 
-(prelude-require-package 'web-beautify)
+(add-hook 'js2-mode-hook (lambda ()
+                           (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
-(eval-after-load 'js2-mode
-  '(define-key js2-mode-map (kbd "C-c b") 'web-beautify-js))
+(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+
+(add-to-list 'company-backends 'company-tern)
+(add-hook 'js2-mode-hook (lambda ()
+                           (tern-mode)
+                           (company-mode)))
+
+;; Disable completion keybindings, as we use xref-js2 instead
+(define-key tern-mode-keymap [(meta ?.)] nil)
+(define-key tern-mode-keymap [(meta ?,)] nil)
+
+(use-package web-beautify
+  :defer t
+  :init
+  (progn
+    (eval-after-load 'js2-mode
+      '(define-key js2-mode-map (kbd "C-c b") 'web-beautify-js))
+    ;; Or if you're using 'js-mode' (a.k.a 'javascript-mode')
+    (eval-after-load 'js
+      '(define-key js-mode-map (kbd "C-c b") 'web-beautify-js))
+
+    (eval-after-load 'json-mode
+      '(define-key json-mode-map (kbd "C-c b") 'web-beautify-js))
+
+    (eval-after-load 'sgml-mode
+      '(define-key html-mode-map (kbd "C-c b") 'web-beautify-html))
+
+    (eval-after-load 'web-mode
+      '(define-key web-mode-map (kbd "C-c b") 'web-beautify-html))
+
+    (eval-after-load 'css-mode
+      '(define-key css-mode-map (kbd "C-c b") 'web-beautify-css))))
 
 
 ;;;
@@ -293,22 +332,12 @@
 ;; Misc
 ;;;
 
-(prelude-require-package 'elfeed)
-
-(setq elfeed-feeds
-      '("http://nullprogram.com/feed/"
-        "http://planet.emacsen.org/atom.xml"))
-
-
-(global-set-key (kbd "C-x w") 'elfeed)
-
 ;; nyan nyan nyan~~~
 (prelude-require-package 'nyan-mode)
 (nyan-mode)
-(nyan-start-animation)
-
 
 (prelude-require-package 'whitespace-cleanup-mode)
+
 
 ;;;
 ;; LaTeX

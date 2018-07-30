@@ -249,6 +249,7 @@ The body of the advice is in BODY."
       bookmark-save-flag 1)
 
 ;; projectile is a project management mode
+(setq projectile-keymap-prefix (kbd "C-c p"))
 (require 'projectile)
 (setq projectile-cache-file (expand-file-name  "projectile.cache" prelude-savefile-dir))
 (projectile-mode t)
