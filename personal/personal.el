@@ -152,6 +152,7 @@
   ;; make org-mode” syntax color embedded source code
   (setq org-src-fontify-natively t))
 
+(setq org-agenda-files (file-expand-wildcards "~/Dropbox/GTD/*.org"))
 
 ;;;
 ;; C / C++
