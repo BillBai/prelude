@@ -1,6 +1,23 @@
-;; save/restore opened files
-;; (desktop-save-mode 1)
+;;; personal.el
 
+;;;
+;; File Comment Header
+;;;
+
+(defun make-file-header ()
+    "Insert header comment for file"
+  (interactive)
+  (insert "/**" "\n")
+  (insert "* File: " (file-name-nondirectory buffer-file-name) "\n")
+  (insert "* Project: " "melo" "\n")
+  (insert "* Created Date: " (format-time-string "%A, %B %d %Y, %l:%M:%S %p") "\n")
+  (insert "* Author: billbai billbai@tencent.com" "\n")
+  (insert "* -----" "\n")
+  (insert "* Copyright (c) " (format-time-string "%Y") " Tencent" "\n")
+  (insert "*/" "\n"))
+
+
+;;
 (setq projectile-keymap-prefix (kbd "C-c p"))
 
 ;; linum mode on
@@ -43,7 +60,7 @@
 (cnfonts-enable)
 
 (add-to-list 'default-frame-alist '(height . 67))
-(add-to-list 'default-frame-alist '(width . 120))
+(add-to-list 'default-frame-alist '(width . 167))
 
 (prelude-require-package 'solarized-theme)
 (prelude-require-package 'spacemacs-theme)
@@ -56,11 +73,11 @@
 
 (prelude-require-package 'quelpa)
 
-(quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
+;; (quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
 
 
 ;;;
-;; Coding
+;;Text Encoding
 ;;;
 
 (set-language-environment "UTF-8")
@@ -174,6 +191,8 @@
 
 (prelude-require-package 'flycheck-rtags)
 
+(prelude-require-package 'rtags)
+
 ;; ensure that we use only rtags checking
 ;; https://github.com/Andersbakken/rtags#optional-1
 (defun setup-flycheck-rtags ()
@@ -209,11 +228,6 @@
   (require 'flycheck-rtags)
   ;; c-mode-common-hook is also called by c++-mode
   (add-hook 'c-mode-common-hook #'setup-flycheck-rtags))
-
-(prelude-require-package 'rtags)
-
-(prelude-require-package 'cmake-ide)
-(cmake-ide-setup)
 
 ;; (optional) adds CC special commands to `company-begin-commands' in order to
 ;; trigger completion at interesting places, such as after scope operator
@@ -258,10 +272,7 @@
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
 
-(prelude-require-packages '(flycheck
-                            ggtags
-                            helm-gtags
-                            js-doc
+(prelude-require-packages '(js-doc
                             js2-mode
                             js2-refactor
                             xref-js2
@@ -276,23 +287,23 @@
 
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
 (js2r-add-keybindings-with-prefix "C-c C-r")
-(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+;; (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
 
-;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
-;; unbind it.
+;; ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
+;; ;; unbind it.
 (define-key js-mode-map (kbd "M-.") nil)
 
 (add-hook 'js2-mode-hook (lambda ()
                            (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
-(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+;; (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
 
 (add-to-list 'company-backends 'company-tern)
 (add-hook 'js2-mode-hook (lambda ()
                            (tern-mode)
                            (company-mode)))
 
-;; Disable completion keybindings, as we use xref-js2 instead
+;; ;; Disable completion keybindings, as we use xref-js2 instead
 (define-key tern-mode-keymap [(meta ?.)] nil)
 (define-key tern-mode-keymap [(meta ?,)] nil)
 
@@ -354,4 +365,13 @@
                              (setq TeX-save-query  nil)
                              (setq TeX-show-compilation t)))
 
+;;;
+;; File Comment Headers
+;;;
+
+
+
 ;;; personal.el ends here.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; personal.el ends here
