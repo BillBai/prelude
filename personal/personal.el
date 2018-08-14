@@ -20,9 +20,6 @@
 ;;
 (setq projectile-keymap-prefix (kbd "C-c p"))
 
-;; linum mode on
-(linum-mode)
-
 
 ;; disable scroll bar for GUI
 (when (display-graphic-p)
@@ -120,11 +117,11 @@
   ;; 1. 光标只有在注释里面时，才可以输入中文。
   ;; 2. 光标前是汉字字符时，才能输入中文。
   ;; 3. 使用 M-j 快捷键，强制将光标前的拼音字符串转换为中文。
-  (setq-default pyim-english-input-switch-functions
-                '(pyim-probe-dynamic-english
-                  pyim-probe-isearch-mode
-                  pyim-probe-program-mode
-                  pyim-probe-org-structure-template))
+  ;; (setq-default pyim-english-input-switch-functions
+                ;; '(pyim-probe-dynamic-english
+                  ;; pyim-probe-isearch-mode
+                  ;; pyim-probe-program-mode
+                  ;; pyim-probe-org-structure-template))
 
   (setq-default pyim-punctuation-half-width-functions
                 '(pyim-probe-punctuation-line-beginning
@@ -143,7 +140,8 @@
 
 
   :bind
-  (("M-j" . pyim-convert-code-at-point) ;与 pyim-probe-dynamic-english 配合
+  (
+   ;; ("M-j" . pyim-convert-code-at-point) ;与 pyim-probe-dynamic-english 配合
    ("C-;" . pyim-delete-word-from-personal-buffer)))
 
 
@@ -228,6 +226,7 @@
   (require 'flycheck-rtags)
   ;; c-mode-common-hook is also called by c++-mode
   (add-hook 'c-mode-common-hook #'setup-flycheck-rtags))
+
 
 ;; (optional) adds CC special commands to `company-begin-commands' in order to
 ;; trigger completion at interesting places, such as after scope operator
@@ -365,13 +364,6 @@
                              (setq TeX-save-query  nil)
                              (setq TeX-show-compilation t)))
 
-;;;
-;; File Comment Headers
-;;;
-
-
-
-;;; personal.el ends here.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; personal.el ends here
