@@ -16,14 +16,18 @@
   (insert "* Copyright (c) " (format-time-string "%Y") " Tencent" "\n")
   (insert "*/" "\n"))
 
-
 ;;
 (setq projectile-keymap-prefix (kbd "C-c p"))
 
+(setq whitespace-line-column 120)
 
 ;; disable scroll bar for GUI
 (when (display-graphic-p)
   (scroll-bar-mode -1))
+
+;; enable global linum mode
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode))
 
 ;; use ibuffer instead of helm-buffer-list
 ;; restore from the helm everywhere key binding
@@ -40,24 +44,58 @@
 ;; set font
 (cond
  ((string-equal system-type "windows-nt") ; Microsoft Windows
-  (when (member "Fira Code" (font-family-list))
-    (add-to-list 'initial-frame-alist '(font . "Fira Code-16"))
-    (add-to-list 'default-frame-alist '(font . "Fira Code-16"))))
+  (when (member "Sarasa Mono T SC" (font-family-list))
+    (add-to-list 'initial-frame-alist '(font . "Sarasa Mono T SC-16"))
+    (add-to-list 'default-frame-alist '(font . "Sarasa Mono T SC-16"))))
  ((string-equal system-type "darwin") ; macOS
-  (when (member "Fira Code" (font-family-list))
-    (add-to-list 'initial-frame-alist '(font . "Fira Code-16"))
-    (add-to-list 'default-frame-alist '(font . "Fira Code-16"))))
+  (when (member "Sarasa Mono T SC" (font-family-list))
+    (add-to-list 'initial-frame-alist '(font . "Sarasa Mono T SC-16"))
+    (add-to-list 'default-frame-alist '(font . "Sarasa Mono T SC-16"))))
  ((string-equal system-type "gnu/linux") ; linux
-  (when (member "DejaVu Sans Mono" (font-family-list))
-    (add-to-list 'initial-frame-alist '(font . "DejaVu Sans Mono-16"))
-    (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-16")))))
+  (when (member "Sarasa Mono T SC" (font-family-list))
+    (add-to-list 'initial-frame-alist '(font . "Sarasa Mono T SC-16"))
+    (add-to-list 'default-frame-alist '(font . "Sarasa Mono T SC-16")))))
+
+;; specify font for all unicode characters
+(when (member "Symbola" (font-family-list))
+  (set-fontset-font t 'unicode "Symbola" nil 'prepend))
+
+;; (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+;;                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+;;                (36 . ".\\(?:>\\)")
+;;                (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+;;                (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+;;                (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+;;                (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+;;                (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+;;                (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+;;                (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+;;                (48 . ".\\(?:x[a-zA-Z]\\)")
+;;                (58 . ".\\(?:::\\|[:=]\\)")
+;;                (59 . ".\\(?:;;\\|;\\)")
+;;                (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+;;                (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+;;                (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+;;                (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+;;                (91 . ".\\(?:]\\)")
+;;                (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+;;                (94 . ".\\(?:=\\)")
+;;                (119 . ".\\(?:ww\\)")
+;;                (123 . ".\\(?:-\\)")
+;;                (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+;;                (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+;;                )
+;;              ))
+;;   (dolist (char-regexp alist)
+;;     (set-char-table-range composition-function-table (car char-regexp)
+;;                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
 
 (prelude-require-package 'cnfonts)
 
 (cnfonts-enable)
 
 (add-to-list 'default-frame-alist '(height . 67))
-(add-to-list 'default-frame-alist '(width . 167))
+(add-to-list 'default-frame-alist '(width . 142))
 
 (prelude-require-package 'solarized-theme)
 (prelude-require-package 'spacemacs-theme)
@@ -328,6 +366,8 @@
     (eval-after-load 'css-mode
       '(define-key css-mode-map (kbd "C-c b") 'web-beautify-css))))
 
+
+(require 'js-doc)
 
 ;;;
 ;; Python
