@@ -101,8 +101,8 @@
 (prelude-require-package 'spacemacs-theme)
 (prelude-require-package 'material-theme)
 
-(setq prelude-theme 'material)
-(load-theme 'material t)
+(setq prelude-theme 'spacemacs-dark)
+(load-theme 'spacemacs-dark t)
 
 (prelude-require-package 'use-package)
 
