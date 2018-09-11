@@ -8,26 +8,27 @@
     "Insert header comment for file"
   (interactive)
   (insert "/**" "\n")
-  (insert "* File: " (file-name-nondirectory buffer-file-name) "\n")
-  (insert "* Project: " (projectile-project-name) "\n")
-  (insert "* Created Date: " (format-time-string "%A, %B %d %Y, %l:%M:%S %p") "\n")
-  (insert "* Author: billbai billbai@tencent.com" "\n")
-  (insert "* -----" "\n")
-  (insert "* Copyright (c) " (format-time-string "%Y") " Tencent" "\n")
-  (insert "*/" "\n"))
+  (insert " * File: " (file-name-nondirectory buffer-file-name) "\n")
+  (insert " * Project: " (projectile-project-name) "\n")
+  (insert " * Created Date: " (format-time-string "%A, %B %d %Y, %l:%M:%S %p") "\n")
+  (insert " * Author: billbai billbai@tencent.com" "\n")
+  (insert " * -----" "\n")
+  (insert " * Copyright (c) " (format-time-string "%Y") " Tencent" "\n")
+  (insert " */" "\n"))
 
 
 (defun make-self-file-header ()
   "Insert self project header comment for file"
   (interactive)
   (insert "/**" "\n")
-  (insert "* File: " (file-name-nondirectory buffer-file-name) "\n")
-  (insert "* Project: " (projectile-project-name) "\n")
-  (insert "* Created Date: " (format-time-string "%A, %B %d %Y, %l:%M:%S %p") "\n")
-  (insert "* Author: billbai billbai42@gmail.com" "\n")
-  (insert "* -----" "\n")
-  (insert "* Copyright (c) " (format-time-string "%Y") " billbai" "\n")
-  (insert "*/" "\n"))
+  (insert " * File: " (file-name-nondirectory buffer-file-name) "\n")
+  (insert " * Project: " (projectile-project-name) "\n")
+  (insert " * Created Date: " (format-time-string "%A, %B %d %Y, %l:%M:%S %p") "\n")
+  (insert " * Author: billbai billbai42@gmail.com" "\n")
+  (insert " * -----" "\n")
+  (insert " * Copyright (c) " (format-time-string "%Y") " billbai" "\n")
+  (insert " */" "\n"))
+
 
 ;;
 (setq projectile-keymap-prefix (kbd "C-c p"))
@@ -69,9 +70,6 @@
     (add-to-list 'initial-frame-alist '(font . "Sarasa Mono T SC-16"))
     (add-to-list 'default-frame-alist '(font . "Sarasa Mono T SC-16")))))
 
-;; specify font for all unicode characters
-(when (member "Symbola" (font-family-list))
-  (set-fontset-font t 'unicode "Symbola" nil 'prepend))
 
 ;; (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
 ;;                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
@@ -107,6 +105,20 @@
 
 (cnfonts-enable)
 
+(defun my-set-symbol-fonts (fontsizes-list)
+  (let* ((fontname "Symbola")
+         (fontsize (nth 0 fontsizes-list))
+         (fontspec (font-spec :name fontname
+                              :size fontsize
+                              :weight 'normal
+                              :slant 'normal)))
+    (if (cnfonts--fontspec-valid-p fontspec)
+        (set-fontset-font "fontset-default" 'symbol fontspec nil 'append)
+      (message "字体 %S 不存在！" fontname))))
+
+(add-hook 'cnfonts-set-font-finish-hook 'my-set-symbol-fonts)
+
+
 (add-to-list 'default-frame-alist '(height . 67))
 (add-to-list 'default-frame-alist '(width . 142))
 
@@ -121,7 +133,7 @@
 
 (prelude-require-package 'quelpa)
 
-;; (quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
+(quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
 
 
 ;;;
@@ -317,6 +329,7 @@
 ;;;
 ;; Web Frontend
 ;;;
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
 (prelude-require-package 'emmet-mode)
 
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
