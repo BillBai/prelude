@@ -83,6 +83,7 @@
     operate-on-number
     smartparens
     smartrep
+    super-save
     undo-tree
     volatile-highlights
     which-key
