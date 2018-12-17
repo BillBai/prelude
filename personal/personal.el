@@ -4,14 +4,22 @@
 ;; File Comment Header
 ;;;
 
-(defun make-file-header ()
+(defun git-file-path (path)
+  (let* ((root (file-truename (vc-git-root path)))
+         (filename (file-name-nondirectory path))
+         (filename-length (length filename)))
+    (let ((chunk (file-relative-name path root)))
+      chunk)))
+
+
+(defun make-company-file-header ()
     "Insert header comment for file"
   (interactive)
   (insert "/**" "\n")
-  (insert " * File: " (file-name-nondirectory buffer-file-name) "\n")
+  (insert " * File: " (git-file-path buffer-file-name) "\n")
   (insert " * Project: " (projectile-project-name) "\n")
   (insert " * Created Date: " (format-time-string "%A, %B %d %Y, %l:%M:%S %p") "\n")
-  (insert " * Author: billbai billbai@tencent.com" "\n")
+  (insert " * Author: billbai <billbai@tencent.com>" "\n")
   (insert " * -----" "\n")
   (insert " * Copyright (c) " (format-time-string "%Y") " Tencent" "\n")
   (insert " */" "\n"))
@@ -21,10 +29,10 @@
   "Insert self project header comment for file"
   (interactive)
   (insert "/**" "\n")
-  (insert " * File: " (file-name-nondirectory buffer-file-name) "\n")
+  (insert " * File: " (git-file-path buffer-file-name) "\n")
   (insert " * Project: " (projectile-project-name) "\n")
   (insert " * Created Date: " (format-time-string "%A, %B %d %Y, %l:%M:%S %p") "\n")
-  (insert " * Author: billbai billbai42@gmail.com" "\n")
+  (insert " * Author: billbai <billbai42@gmail.com>" "\n")
   (insert " * -----" "\n")
   (insert " * Copyright (c) " (format-time-string "%Y") " billbai" "\n")
   (insert " */" "\n"))
@@ -125,9 +133,10 @@
 (prelude-require-package 'solarized-theme)
 (prelude-require-package 'spacemacs-theme)
 (prelude-require-package 'material-theme)
+(prelude-require-package 'gruvbox-theme)
 
-(setq prelude-theme 'spacemacs-dark)
-(load-theme 'spacemacs-dark t)
+(setq prelude-theme 'gruvbox-dark-medium)
+(load-theme 'gruvbox-dark-medium t)
 
 (prelude-require-package 'use-package)
 
