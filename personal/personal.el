@@ -135,8 +135,8 @@
 (prelude-require-package 'material-theme)
 (prelude-require-package 'gruvbox-theme)
 
-(setq prelude-theme 'gruvbox-dark-medium)
-(load-theme 'gruvbox-dark-medium t)
+(setq prelude-theme 'spacemacs-dark)
+(load-theme 'spacemacs-dark t)
 
 (prelude-require-package 'use-package)
 
