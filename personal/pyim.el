@@ -6,6 +6,11 @@
 (prelude-require-package 'pyim-basedict)
 (prelude-require-package 'posframe)
 
+;; use quelpa to get pyim-greatdict
+;; (prelude-require-package 'quelpa)
+;; (quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
+
+
 (use-package pyim
   :ensure nil
   :demand t
@@ -14,9 +19,11 @@
   (use-package pyim-basedict
     :ensure nil
     :config (pyim-basedict-enable))
-  (use-package pyim-greatdict
-    :ensure nil
-    :config (pyim-greatdict-enable))
+
+  ;; greatdict is too slow....
+  ;; (use-package pyim-greatdict
+  ;;   :ensure nil
+  ;;   :config (pyim-greatdict-enable))
 
   ;; 五笔用户使用 wbdict 词库
   ;; (use-package pyim-wbdict
@@ -59,4 +66,3 @@
   :bind
   (("M-j" . pyim-convert-code-at-point) ;与 pyim-probe-dynamic-english 配合
    ("C-;" . pyim-delete-word-from-personal-buffer)))
-

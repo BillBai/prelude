@@ -7,8 +7,9 @@
                                                     fbasename)))
      (concat (upcase (projectile-project-name))
              "_"
-             (upcase inc-guard-base))))
- 
+             (upcase inc-guard-base)
+             "_")))
+
 (defun make-include-guard ()
   (interactive)
   (let ((file-name (buffer-file-name (current-buffer))))
@@ -22,5 +23,3 @@
         (newline)
         (previous-line 3)
         (set-buffer-modified-p nil)))))
-
-

@@ -1,10 +1,12 @@
 ;;; personal.el
-(prelude-require-package 'use-package)
 
-;;
+;; re-bind projectile prefix key
 (setq projectile-keymap-prefix (kbd "C-c p"))
 
-(setq whitespace-line-column 120)
+;; set column limit to 1--
+(setq whitespace-line-column 100)
+(setq whitespace-style '(face empty tabs lines-tail trailing))
+(global-whitespace-mode t)
 
 ;; disable scroll bar for GUI
 (when (display-graphic-p)
@@ -14,34 +16,36 @@
 (when (version<= "26.0.50" emacs-version )
   (global-display-line-numbers-mode))
 
+
 ;; use ibuffer instead of helm-buffer-list
 ;; restore from the helm everywhere key binding
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-
+;; quick access to recent files
 (recentf-mode 1) ; keep a list of recently opened files
 ;; set F7 to list recently opened file
 (global-set-key (kbd "<f7>") 'recentf-open-files)
 
+;; M-x alternative key
 (global-set-key (kbd "<f5>") 'execute-extended-command)
 
-
+;; default frame size
 (add-to-list 'default-frame-alist '(height . 67))
-(add-to-list 'default-frame-alist '(width . 142))
+(add-to-list 'default-frame-alist '(width . 200))
 
+;; some theme
 (prelude-require-package 'solarized-theme)
 (prelude-require-package 'spacemacs-theme)
 (prelude-require-package 'material-theme)
 (prelude-require-package 'gruvbox-theme)
 
+;; prefer gruvbox for now~
 (setq prelude-theme 'gruvbox)
 (load-theme 'gruvbox t)
 
+
+;; make sure we got use-package
 (prelude-require-package 'use-package)
-
-(prelude-require-package 'quelpa)
-
-(quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
 
 
 ;;;
@@ -61,8 +65,8 @@
   :ensure t
   :bind (("M-n" . mc/mark-next-like-this)
          ("M-p" . mc/mark-previous-like-this)
-         ("C-c a" . mc/mark-all-like-this)
-         ("C-c e" . mc/edit-lines))
+         ("C-c C-a" . mc/mark-all-like-this)
+         ("C-c C-e" . mc/edit-lines))
   )
 
 
