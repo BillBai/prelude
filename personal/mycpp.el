@@ -2,11 +2,15 @@
 ;; C / C++
 ;;;
 
-(prelude-require-packages '(
-                            yasnippet
-                            counsel-etags
-                            clang-format
-                            modern-cpp-font-lock))
+(prelude-require-packages '(yasnippet counsel-etags
+                            clang-format modern-cpp-font-lock
+                            cc-mode cmake-mode counsel counsel-etags
+                            irony company company-irony
+                            company-irony-c-headers
+                            flycheck flycheck-irony
+                            rtags google-c-style
+                            ycmd company-ycmd
+                            flycheck-ycmd))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Configuration/Customization:
@@ -15,14 +19,78 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Specify the ycmd server command and path to the ycmd directory *inside* the
 ;; cloned ycmd directory
-(defvar my:ycmd-server-command '("python" "$HOME/Developer/ycmd/ycmd/"))
-(defvar my:ycmd-extra-conf-whitelist '("~/.ycm_extra_conf.py"))
-(defvar my:ycmd-global-config "~/.ycm_extra_conf.py")
-
-
+(defvar my:ycmd-server-command '("python" "/home/bill/Developer/ycmd/ycmd"))
+(defvar my:ycmd-extra-conf-whitelist '("/home/bill/Developer/.ycm_extra_conf.py"))
+(defvar my:ycmd-global-config "/home/bill/Developer/.ycm_extra_conf.py")
 
 ;; Compilation command for C/C++
-(defvar my:compile-command "clang++ -Wall -Wextra -std=c++14 ")
+(defvar my:compile-command "clang++ -Wall -Wextra -std=c++17")
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Clang-format
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; clang-format can be triggered using C-c C-f
+;; Create clang-format file using google style
+;; clang-format -style=google -dump-config > .clang-format
+(use-package clang-format
+  :ensure t
+  :bind (("C-c C-f" . clang-format-region))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Modern C++ code highlighting
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package modern-cpp-font-lock
+  :ensure t
+  :init
+  (eval-when-compile
+    ;; Silence missing function warnings
+    (declare-function modern-c++-font-lock-global-mode
+                      "modern-cpp-font-lock.el"))
+  :config
+  (modern-c++-font-lock-global-mode t)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; C++ keys
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package cc-mode
+  :ensure t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
+  :config
+  (define-key c++-mode-map (kbd "C-c C-c") 'compile)
+  (define-key c++-mode-map (kbd "C-c C-k") 'kill-compilation)
+  (setq compile-command my:compile-command)
+  (use-package google-c-style
+    :ensure t
+    :config
+    ;; This prevents the extra two spaces in a namespace that Emacs
+    ;; otherwise wants to put... Gawd!
+    (add-hook 'c-mode-common-hook 'google-set-c-style)
+    ;; Autoindent using google style guide
+    (add-hook 'c-mode-common-hook 'google-make-newline-indent)
+    )
+  )
+
+;; We want to be able to see if there is a tab character vs a space.
+;; global-whitespace-mode allows us to do just that.
+;; Set whitespace mode to only show tabs, not newlines/spaces.
+(use-package whitespace
+  :ensure t
+  :init
+  (eval-when-compile
+    ;; Silence missing function warnings
+    (declare-function global-whitespace-mode "whitespace.el"))
+  :config
+  (setq whitespace-style '(tabs tab-mark))
+  ;; Turn on whitespace mode globally.
+  (global-whitespace-mode t)
+  )
+
+;; Enable hide/show of code blocks
+(add-hook 'c-mode-common-hook 'hs-minor-mode)
 
 (use-package counsel
   :ensure t
@@ -74,6 +142,7 @@
   (setq counsel-etags-max-file-size 800)
   ;; Ignore build directories for tagging
   (add-to-list 'counsel-etags-ignore-directories '"build*")
+  (add-to-list 'counsel-etags-ignore-directories '"out*")
   (add-to-list 'counsel-etags-ignore-directories '".vscode")
   (add-to-list 'counsel-etags-ignore-filenames '".clang-format")
   ;; Don't ask before rereading the TAGS files if they have changed
@@ -146,79 +215,7 @@
         )
   )
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Clang-format
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; clang-format can be triggered using C-c C-f
-;; Create clang-format file using google style
-;; clang-format -style=google -dump-config > .clang-format
-(use-package clang-format
-  :ensure t
-  :bind (("C-c C-f" . clang-format-region))
-  )
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Modern C++ code highlighting
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package modern-cpp-font-lock
-  :ensure t
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function modern-c++-font-lock-global-mode
-                      "modern-cpp-font-lock.el"))
-  :config
-  (modern-c++-font-lock-global-mode t)
-  )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; C++ keys
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package cc-mode
-  :ensure t
-  :init
-  (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
-  :config
-  (define-key c++-mode-map (kbd "C-c C-c") 'compile)
-  (define-key c++-mode-map (kbd "C-c C-k") 'kill-compilation)
-  (setq compile-command my:compile-command)
-  (use-package google-c-style
-    :ensure t
-    :config
-    ;; This prevents the extra two spaces in a namespace that Emacs
-    ;; otherwise wants to put... Gawd!
-    (add-hook 'c-mode-common-hook 'google-set-c-style)
-    ;; Autoindent using google style guide
-    (add-hook 'c-mode-common-hook 'google-make-newline-indent)
-    )
-  )
-
-;; Change tab key behavior to insert spaces instead
-(setq-default indent-tabs-mode nil)
-
-;; Set the number of spaces that the tab key inserts (usually 2 or 4)
-(setq c-basic-offset 2)
-;; Set the size that a tab CHARACTER is interpreted as
-;; (unnecessary if there are no tab characters in the file!)
-(setq tab-width 2)
-
-;; We want to be able to see if there is a tab character vs a space.
-;; global-whitespace-mode allows us to do just that.
-;; Set whitespace mode to only show tabs, not newlines/spaces.
-(use-package whitespace
-  :ensure t
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function global-whitespace-mode "whitespace.el"))
-  :config
-  (setq whitespace-style '(tabs tab-mark))
-  ;; Turn on whitespace mode globally.
-  (global-whitespace-mode t)
-  )
-
-;; Enable hide/show of code blocks
-(add-hook 'c-mode-common-hook 'hs-minor-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package: ycmd (YouCompleteMeDaemon)
@@ -304,26 +301,40 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   (add-hook 'python-mode-hook 'my/python-mode-hook)
   )
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Configure flycheck
+;; ycmd setup for chromium based code
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Note: For C++ we use flycheck-ycmd
-(use-package flycheck
-  :ensure t
-  :defer t
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function global-flycheck-mode "flycheck.el"))
-  :config
-  ;; Turn flycheck on everywhere
-  (global-flycheck-mode t)
-  ;; There are issues with company mode and flycheck in terminal mode.
-  ;; This is outlined at:
-  ;; https://github.com/abingham/emacs-ycmd
-  (when (not (display-graphic-p))
-    (setq flycheck-indication-mode nil))
-  )
-(use-package flycheck-pyflakes
-  :ensure t
-  :after python)
+
+
+(prelude-require-packages '())
+
+;; (company-ycmd-setup)
+;; (flycheck-ycmd-setup)
+
+;; ;; Show completions after 0.15 seconds
+;; (setq company-idle-delay 0.15)
+
+;; ;; Activate for editing C++ files
+;; (add-hook 'c++-mode-hook 'ycmd-mode)
+;; (add-hook 'c++-mode-hook 'company-mode)
+;; (add-hook 'c++-mode-hook 'flycheck-mode)
+
+;; ;; Replace the directory information with where you downloaded ycmd to
+;; (set-variable 'ycmd-server-command
+;;               (list "python" (substitute-in-file-name "/home/bill/Developer/ycmd/ycmd/__main__.py")))
+
+;; ;; Edit according to where you have your Chromium/Blink checkout
+;; (add-to-list 'ycmd-extra-conf-whitelist
+;;              (substitute-in-file-name "/home/bill/Workspace/qnox/.ycm_extra_conf.py"))
+
+;; (add-to-list 'ycmd-extra-conf-whitelist
+;;              (substitute-in-file-name "/home/bill/Workspace/chromium-dev/chromium/.ycm_extra_conf.py"))
+
+;; ;; Show flycheck errors in idle-mode as well
+;; (setq ycmd-parse-conditions '(save new-line mode-enabled idle-change))
+
+;; ;; Makes emacs-ycmd less verbose
+;; (setq url-show-status nil)

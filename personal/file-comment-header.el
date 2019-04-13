@@ -2,13 +2,14 @@
 ;; File Comment Header
 ;;;
 
+(prelude-require-package 'projectile)
+
 (defun git-file-path (path)
   (let* ((root (file-truename (vc-git-root path)))
          (filename (file-name-nondirectory path))
          (filename-length (length filename)))
     (let ((chunk (file-relative-name path root)))
       chunk)))
-
 
 (defun make-company-file-header ()
     "Insert header comment for file"

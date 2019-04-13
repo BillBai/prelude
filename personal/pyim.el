@@ -10,7 +10,6 @@
 ;; (prelude-require-package 'quelpa)
 ;; (quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
 
-
 (use-package pyim
   :ensure nil
   :demand t

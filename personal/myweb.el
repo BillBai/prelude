@@ -1,4 +1,3 @@
-
 ;;;
 ;; Web Frontend
 ;;;
@@ -15,12 +14,12 @@
                             json-mode
                             json-snatcher
                             tern
+                            company-tern
                             web-beautify
                             skewer-mode
                             livid-mode))
 
 (require 'tern)
-
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
 (js2r-add-keybindings-with-prefix "C-c C-r")
 ;; (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
@@ -33,7 +32,6 @@
                            (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
 ;; (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
-
 (add-to-list 'company-backends 'company-tern)
 (add-hook 'js2-mode-hook (lambda ()
                            (tern-mode)

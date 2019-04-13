@@ -8,6 +8,10 @@ eshell
 elpa
 el-get
 semanticdb
+pyim
+quelpa
+irony
+request
 url
 ede-projects.el
 .DS_Store

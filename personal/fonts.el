@@ -1,4 +1,4 @@
-;; set font
+;; set fonts
 (cond
  ((string-equal system-type "windows-nt") ; Microsoft Windows
   (when (member "Sarasa Mono T SC" (font-family-list))
