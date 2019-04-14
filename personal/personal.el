@@ -1,47 +1,27 @@
 ;;; personal.el
 
-;;;
-;; File Comment Header
-;;;
+;;; custom packages
+(prelude-require-package 'use-package)
 
-(defun git-file-path (path)
-  (let* ((root (file-truename (vc-git-root path)))
-         (filename (file-name-nondirectory path))
-         (filename-length (length filename)))
-    (let ((chunk (file-relative-name path root)))
-      chunk)))
+;; Some themes
+(prelude-require-package 'solarized-theme)
+(prelude-require-package 'spacemacs-theme)
+(prelude-require-package 'material-theme)
+(prelude-require-package 'gruvbox-theme)
 
-
-(defun make-company-file-header ()
-    "Insert header comment for file"
-  (interactive)
-  (insert "/**" "\n")
-  (insert " * File: " (git-file-path buffer-file-name) "\n")
-  (insert " * Project: " (projectile-project-name) "\n")
-  (insert " * Created Date: " (format-time-string "%A, %B %d %Y, %l:%M:%S %p") "\n")
-  (insert " * Author: billbai <billbai@tencent.com>" "\n")
-  (insert " * -----" "\n")
-  (insert " * Copyright (c) " (format-time-string "%Y") " Tencent" "\n")
-  (insert " */" "\n"))
+;; Non-nil means draw block cursor as wide as the glyph under it.
+;; For example, if a block cursor is over a tab, it will be drawn as
+;; wide as that tab on the display.
+(setq x-stretch-cursor t)
 
 
-(defun make-self-file-header ()
-  "Insert self project header comment for file"
-  (interactive)
-  (insert "/**" "\n")
-  (insert " * File: " (git-file-path buffer-file-name) "\n")
-  (insert " * Project: " (projectile-project-name) "\n")
-  (insert " * Created Date: " (format-time-string "%A, %B %d %Y, %l:%M:%S %p") "\n")
-  (insert " * Author: billbai <billbai42@gmail.com>" "\n")
-  (insert " * -----" "\n")
-  (insert " * Copyright (c) " (format-time-string "%Y") " billbai" "\n")
-  (insert " */" "\n"))
-
-
-;;
+;; re-bind projectile prefix key
 (setq projectile-keymap-prefix (kbd "C-c p"))
 
-(setq whitespace-line-column 120)
+;; set column limit to 1--
+(setq whitespace-line-column 100)
+(setq whitespace-style '(face empty tabs lines-tail trailing))
+(global-whitespace-mode t)
 
 ;; disable scroll bar for GUI
 (when (display-graphic-p)
@@ -55,171 +35,52 @@
 ;; restore from the helm everywhere key binding
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-
+;; quick access to recent files
 (recentf-mode 1) ; keep a list of recently opened files
-;; set F7 to list recently opened file
-(global-set-key (kbd "<f7>") 'recentf-open-files)
 
+;; M-x alternative key
 (global-set-key (kbd "<f5>") 'execute-extended-command)
 
-
-;; set font
-(cond
- ((string-equal system-type "windows-nt") ; Microsoft Windows
-  (when (member "Sarasa Mono T SC" (font-family-list))
-    (add-to-list 'initial-frame-alist '(font . "Sarasa Mono T SC-16"))
-    (add-to-list 'default-frame-alist '(font . "Sarasa Mono T SC-16"))))
- ((string-equal system-type "darwin") ; macOS
-  (when (member "Sarasa Mono T SC" (font-family-list))
-    (add-to-list 'initial-frame-alist '(font . "Sarasa Mono T SC-16"))
-    (add-to-list 'default-frame-alist '(font . "Sarasa Mono T SC-16"))))
- ((string-equal system-type "gnu/linux") ; linux
-  (when (member "Sarasa Mono T SC" (font-family-list))
-    (add-to-list 'initial-frame-alist '(font . "Sarasa Mono T SC-16"))
-    (add-to-list 'default-frame-alist '(font . "Sarasa Mono T SC-16")))))
-
-
-;; (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
-;;                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
-;;                (36 . ".\\(?:>\\)")
-;;                (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
-;;                (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
-;;                (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
-;;                (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
-;;                (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
-;;                (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
-;;                (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
-;;                (48 . ".\\(?:x[a-zA-Z]\\)")
-;;                (58 . ".\\(?:::\\|[:=]\\)")
-;;                (59 . ".\\(?:;;\\|;\\)")
-;;                (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
-;;                (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
-;;                (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
-;;                (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
-;;                (91 . ".\\(?:]\\)")
-;;                (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
-;;                (94 . ".\\(?:=\\)")
-;;                (119 . ".\\(?:ww\\)")
-;;                (123 . ".\\(?:-\\)")
-;;                (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
-;;                (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
-;;                )
-;;              ))
-;;   (dolist (char-regexp alist)
-;;     (set-char-table-range composition-function-table (car char-regexp)
-;;                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
-
-(prelude-require-package 'cnfonts)
-
-(cnfonts-enable)
-
-(defun my-set-symbol-fonts (fontsizes-list)
-  (let* ((fontname "Symbola")
-         (fontsize (nth 0 fontsizes-list))
-         (fontspec (font-spec :name fontname
-                              :size fontsize
-                              :weight 'normal
-                              :slant 'normal)))
-    (if (cnfonts--fontspec-valid-p fontspec)
-        (set-fontset-font "fontset-default" 'symbol fontspec nil 'append)
-      (message "字体 %S 不存在！" fontname))))
-
-(add-hook 'cnfonts-set-font-finish-hook 'my-set-symbol-fonts)
-
-
+;; default frame size
 (add-to-list 'default-frame-alist '(height . 67))
-(add-to-list 'default-frame-alist '(width . 142))
+(add-to-list 'default-frame-alist '(width . 200))
 
-(prelude-require-package 'solarized-theme)
-(prelude-require-package 'spacemacs-theme)
-(prelude-require-package 'material-theme)
-(prelude-require-package 'gruvbox-theme)
-
-(setq prelude-theme 'spacemacs-dark)
-(load-theme 'spacemacs-dark t)
-
-(prelude-require-package 'use-package)
-
-(prelude-require-package 'quelpa)
-
-(quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
-
+;; prefer gruvbox for now~
+(setq prelude-theme 'gruvbox)
+(load-theme 'gruvbox t)
 
 ;;;
 ;;Text Encoding
 ;;;
-
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
-
-;;;;
-;;   Chinese Input
-;;;;
-
-(prelude-require-package 'pyim)
-(prelude-require-package 'pyim-basedict)
-(prelude-require-package 'posframe)
-
-(use-package pyim
-  :ensure nil
-  :demand t
-  :config
-  ;; 激活 basedict 拼音词库
-  (use-package pyim-basedict
-    :ensure nil
-    :config (pyim-basedict-enable))
-  (use-package pyim-greatdict
-    :ensure nil
-    :config (pyim-greatdict-enable))
-
-  ;; 五笔用户使用 wbdict 词库
-  ;; (use-package pyim-wbdict
-  ;;   :ensure nil
-  ;;   :config (pyim-wbdict-gbk-enable))
-
-  (setq default-input-method "pyim")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; multiple-cursors  - https://github.com/magnars/multiple-cursors.el
+;; Allows you to have multiple cursors on different lines so you can
+;; easily edit multiple lines at once.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(prelude-require-package 'multiple-cursors)
+(use-package multiple-cursors
+  :ensure t
+  :bind (("M-n" . mc/mark-next-like-this)
+         ("M-p" . mc/mark-previous-like-this)
+         ("C-c C-a" . mc/mark-all-like-this)
+         ("C-c C-e" . mc/edit-lines))
+  )
 
 
-  ;; 我使用全拼
-  (setq pyim-default-scheme 'quanpin)
-
-  ;; 设置 pyim 探针设置，这是 pyim 高级功能设置，可以实现 *无痛* 中英文切换 :-)
-  ;; 我自己使用的中英文动态切换规则是：
-  ;; 1. 光标只有在注释里面时，才可以输入中文。
-  ;; 2. 光标前是汉字字符时，才能输入中文。
-  ;; 3. 使用 M-j 快捷键，强制将光标前的拼音字符串转换为中文。
-  ;; (setq-default pyim-english-input-switch-functions
-                ;; '(pyim-probe-dynamic-english
-                  ;; pyim-probe-isearch-mode
-                  ;; pyim-probe-program-mode
-                  ;; pyim-probe-org-structure-template))
-
-  (setq-default pyim-punctuation-half-width-functions
-                '(pyim-probe-punctuation-line-beginning
-                  pyim-probe-punctuation-after-punctuation))
-
-  ;; 开启拼音搜索功能
-  ;; (pyim-isearch-mode 1)
-
-  ;; 使用 pupup-el 来绘制选词框, 如果用 emacs26, 建议设置
-  ;; 为 'posframe, 速度很快并且菜单不会变形，不过需要用户
-  ;; 手动安装 posframe 包。
-  (setq pyim-page-tooltip 'posframe)
-
-  ;; 选词框显示7个候选词
-  (setq pyim-page-length 7)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; vlf - handle open very large files
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(prelude-require-package 'vlf)
+(use-package vlf
+  :ensure t)
 
 
-  :bind
-  (
-   ;; ("M-j" . pyim-convert-code-at-point) ;与 pyim-probe-dynamic-english 配合
-   ("C-;" . pyim-delete-word-from-personal-buffer)))
-
-
-;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org
-;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (eval-after-load "org"
   '(require 'ox-md nil t))
@@ -241,77 +102,107 @@
 
 (setq org-agenda-files (file-expand-wildcards "~/Dropbox/GTD/*.org"))
 
-;;;
-;; C / C++
-;;;
-(prelude-require-package 'irony)
-(prelude-require-package 'company-irony)
-
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
-
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
-(prelude-require-package 'yasnippet)
-(prelude-require-package 'auto-complete-c-headers)
-
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-irony))
-
-(prelude-require-package 'flycheck-rtags)
-
-(prelude-require-package 'rtags)
-
-;; ensure that we use only rtags checking
-;; https://github.com/Andersbakken/rtags#optional-1
-(defun setup-flycheck-rtags ()
-  (interactive)
-  (flycheck-select-checker 'rtags)
-  ;; RTags creates more accurate overlays.
-  (setq-local flycheck-highlighting-mode nil)
-  (setq-local flycheck-check-syntax-automatically nil))
-
-;; only run this if rtags is installed
-(when (require 'rtags nil :noerror)
-  ;; make sure you have company-mode installed
-  (require 'company)
-  (define-key c-mode-base-map (kbd "M-.")
-    (function rtags-find-symbol-at-point))
-  (define-key c-mode-base-map (kbd "M-,")
-    (function rtags-find-references-at-point))
-  ;; disable prelude's use of C-c r, as this is the rtags keyboard prefix
-  (define-key prelude-mode-map (kbd "C-c r") nil)
-  ;; install standard rtags keybindings. Do M-. on the symbol below to
-  ;; jump to definition and see the keybindings.
-  (rtags-enable-standard-keybindings)
-  ;; comment this out if you don't have or don't use helm
-  (setq rtags-use-helm t)
-  ;; company completion setup
-  (setq rtags-autostart-diagnostics t)
-  (rtags-diagnostics)
-  (setq rtags-completions-enabled t)
-  (push 'company-rtags company-backends)
-  (global-company-mode)
-  (define-key c-mode-base-map (kbd "<C-tab>") (function company-complete))
-  ;; use rtags flycheck mode -- clang warnings shown inline
-  (require 'flycheck-rtags)
-  ;; c-mode-common-hook is also called by c++-mode
-  (add-hook 'c-mode-common-hook #'setup-flycheck-rtags))
 
 
-;; (optional) adds CC special commands to `company-begin-commands' in order to
-;; trigger completion at interesting places, such as after scope operator
-;;     std::|
-(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; cmake-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(prelude-require-package 'cmake-mode)
+(use-package cmake-mode
+  :ensure t
+  :mode ("CMakeLists.txt" ".cmake")
+  :hook (cmake-mode . (lambda ()
+                        (add-to-list 'company-backends 'company-cmake)))
+  :config
+  (use-package cmake-font-lock
+    :ensure t
+    :defer t
+    :commands (cmake-font-lock-activate)
+    :hook (cmake-mode . (lambda ()
+                          (cmake-font-lock-activate)
+                          (font-lock-add-keywords
+                           nil '(("\\<\\(FIXME\\|TODO\\|BUG\\|DONE\\)"
+                                  1 font-lock-warning-face t)))
+                          ))))
 
-(yas-global-mode 1)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; protobuf-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(prelude-require-package 'protobuf-mode)
+(use-package protobuf-mode
+  :mode ("\\.proto"))
 
 
-;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; yaml-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package yaml-mode
+  :ensure t
+  :mode (".yml" ".yaml"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; json-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package json-mode
+  :ensure t
+  :mode (".json" ".imp"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Package: yasnippet
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package yasnippet
+  :ensure t
+  :commands (yas-reload-all)
+  :init
+  (eval-when-compile
+    ;; Silence missing function warnings
+    (declare-function yas-global-mode "yasnippet.el"))
+  :defer 5
+  :config
+  (yas-global-mode t)
+  (yas-reload-all))
+
+(use-package yasnippet-snippets
+  :ensure t
+  :after yasnippet
+  :config
+  (yas-reload-all))
+
+;; Apparently the company-yasnippet backend shadows all backends that
+;; come after it. To work around this we assign yasnippet to a different
+;; keybind since actual source completion is vital.
+(use-package company-yasnippet
+  :bind ("C-M-y" . company-yasnippet)
+  :after (yasnippet)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Load asm-mode when opening assembly files
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package asm-mode
+  :mode ("\\.s\\'"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Use markdown-mode for markdown files
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package markdown-mode
+  :ensure t
+:mode (".md" ".markdown"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Configure GN
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; in .emacs.d/vendor
+(require 'gn-mode)
+(add-to-list 'auto-mode-alist '("\\.gn\\'" . gn-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Project Management
-;;;
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (prelude-require-package 'neotree)
 
 (setq neo-smart-open t)
@@ -330,105 +221,23 @@
               (neotree-find file-name)))
       (message "Could not find git project root."))))
 
-(global-set-key [f8] 'neotree-project-dir)
+(global-set-key [f9] 'neotree-project-dir)
 
 (setq-default neo-show-hidden-files t)
 
 
-;;;
-;; Web Frontend
-;;;
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
-(prelude-require-package 'emmet-mode)
-
-(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-(add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-
-(prelude-require-packages '(js-doc
-                            js2-mode
-                            js2-refactor
-                            xref-js2
-                            json-mode
-                            json-snatcher
-                            tern
-                            web-beautify
-                            skewer-mode
-                            livid-mode))
-
-(require 'tern)
-
-(add-hook 'js2-mode-hook #'js2-refactor-mode)
-(js2r-add-keybindings-with-prefix "C-c C-r")
-;; (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
-
-;; ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
-;; ;; unbind it.
-(define-key js-mode-map (kbd "M-.") nil)
-
-(add-hook 'js2-mode-hook (lambda ()
-                           (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
-
-;; (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
-
-(add-to-list 'company-backends 'company-tern)
-(add-hook 'js2-mode-hook (lambda ()
-                           (tern-mode)
-                           (company-mode)))
-
-;; ;; Disable completion keybindings, as we use xref-js2 instead
-(define-key tern-mode-keymap [(meta ?.)] nil)
-(define-key tern-mode-keymap [(meta ?,)] nil)
-
-(use-package web-beautify
-  :defer t
-  :init
-  (progn
-    (eval-after-load 'js2-mode
-      '(define-key js2-mode-map (kbd "C-c b") 'web-beautify-js))
-    ;; Or if you're using 'js-mode' (a.k.a 'javascript-mode')
-    (eval-after-load 'js
-      '(define-key js-mode-map (kbd "C-c b") 'web-beautify-js))
-
-    (eval-after-load 'json-mode
-      '(define-key json-mode-map (kbd "C-c b") 'web-beautify-js))
-
-    (eval-after-load 'sgml-mode
-      '(define-key html-mode-map (kbd "C-c b") 'web-beautify-html))
-
-    (eval-after-load 'web-mode
-      '(define-key web-mode-map (kbd "C-c b") 'web-beautify-html))
-
-    (eval-after-load 'css-mode
-      '(define-key css-mode-map (kbd "C-c b") 'web-beautify-css))))
-
-
-(require 'js-doc)
-
-;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
-;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (prelude-require-package 'virtualenvwrapper)
 (venv-initialize-interactive-shells) ;; if you want interactive shell support
-(setq venv-location "~/.virtualenvs/")
+;; (setq venv-location "~/.wetlands/")
 
 
-
-;;;
-;; Misc
-;;;
-
-;; nyan nyan nyan~~~
-(prelude-require-package 'nyan-mode)
-(nyan-mode)
-
-(prelude-require-package 'whitespace-cleanup-mode)
-
-
-;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LaTeX
-;;;
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (prelude-require-package 'auctex)
 (add-hook 'LaTeX-mode-hook (lambda()
                              (add-to-list
@@ -440,18 +249,208 @@
                              (setq TeX-show-compilation t)))
 
 
-;;----------------------------------------------------------------------------
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Reason setup
-;;----------------------------------------------------------------------------
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (prelude-require-package 'reason-mode)
-
 (add-to-list 'auto-mode-alist '("\\.re\\'" . reason-mode))
 
 (prelude-require-package 'utop)
-
 (setq utop-command "opam config exec -- rtop -emacs")
 (add-hook 'reason-mode-hook #'utop-minor-mode) ;; can be included in the hook above as well
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Misc
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; nyan nyan nyan~~~
+(prelude-require-package 'nyan-mode)
+(nyan-mode)
+
+;; other useful packages
+(prelude-require-packages '(projectile-ripgrep
+                            editorconfig
+                            auto-package-update
+                            origami
+                            beacon
+                            rainbow-delimiters
+                            ))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; personal.el ends here
+;; Automatically compile and save ~/.emacs.el
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun byte-compile-init-files (file)
+  "Automatically compile FILE."
+  (interactive)
+  (save-restriction
+    ;; Suppress the warning when you setq an undefined variable.
+    (if (>= emacs-major-version 23)
+        (setq byte-compile-warnings '(not free-vars obsolete))
+      (setq byte-compile-warnings
+            '(unresolved
+              callargs
+              redefine
+              obsolete
+              noruntime
+              cl-warnings
+              interactive-only)))
+    (byte-compile-file (expand-file-name file)))
+  )
+
+(add-hook
+ 'after-save-hook
+ (function
+  (lambda ()
+    (if (string= (file-truename "~/.emacs.d/personal/personal.el")
+                 (file-truename (buffer-file-name)))
+        (byte-compile-init-files (file-truename "~/.emacs.d/personal/personal.el"))))))
+
+;; Byte-compile again to ~/.emacs.elc if it is outdated
+(if (file-newer-than-file-p
+     (file-truename "~/.emacs.d/init.el")
+     (file-truename "~/.emacs.d/init.elc"))
+    (byte-compile-init-files "~/.emacs.d/init.el"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; auto-package-update
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Auto update packages once a week
+(use-package auto-package-update
+  :ensure t
+  :commands (auto-package-update-maybe)
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe)
+  (add-hook 'auto-package-update-before-hook
+            (lambda () (message "I will update packages now"))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Origami - Does code folding, ie hide the body of an
+;; if/else/for/function so that you can fit more code on your screen
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package origami
+  :ensure t
+  :commands (origami-mode)
+  :bind (:map origami-mode-map
+              ("C-c o :" . origami-recursively-toggle-node)
+              ("C-c o a" . origami-toggle-all-nodes)
+              ("C-c o t" . origami-toggle-node)
+              ("C-c o o" . origami-show-only-node)
+              ("C-c o u" . origami-undo)
+              ("C-c o U" . origami-redo)
+              ("C-c o C-r" . origami-reset)
+              )
+  :config
+  (setq origami-show-fold-header t)
+  ;; The python parser currently doesn't fold if/for/etc. blocks, which is
+  ;; something we want. However, the basic indentation parser does support
+  ;; this with one caveat: you must toggle the node when your cursor is on
+  ;; the line of the if/for/etc. statement you want to collapse. You cannot
+  ;; fold the statement by toggling in the body of the if/for/etc.
+  (add-to-list 'origami-parser-alist '(python-mode . origami-indent-parser))
+  :init
+  (add-hook 'prog-mode-hook 'origami-mode)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Rainbow Delimiters -  have delimiters be colored by their depth
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package rainbow-delimiters
+  :ensure t
+  :init
+  (eval-when-compile
+    ;; Silence missing function warnings
+    (declare-function rainbow-delimiters-mode "rainbow-delimiters.el"))
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Beacon-mode: flash the cursor when switching buffers or scrolling
+;;              the goal is to make it easy to find the cursor
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package beacon
+  :ensure t
+  :init
+  (eval-when-compile
+    ;; Silence missing function warnings
+    (declare-function beacon-mode "beacon.el"))
+  :config
+  (beacon-mode t))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Configure flycheck
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Note: For C++ we use flycheck-ycmd
+(use-package flycheck
+  :ensure t
+  :defer t
+  :init
+  (eval-when-compile
+    ;; Silence missing function warnings
+    (declare-function global-flycheck-mode "flycheck.el"))
+  :config
+  ;; Turn flycheck on everywhere
+  (global-flycheck-mode t)
+  ;; There are issues with company mode and flycheck in terminal mode.
+  ;; This is outlined at:
+  ;; https://github.com/abingham/emacs-ycmd
+  (when (not (display-graphic-p))
+    (setq flycheck-indication-mode nil))
+  )
+(use-package flycheck-pyflakes
+  :ensure t
+  :after python)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; string-inflection
+;; used for switching between different cases, eg CamelCase,
+;; lowerCamelCase, snake_case, and SCREAMING_SNAKE_CASE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package string-inflection
+  :ensure t
+  :defer t
+  :bind (("C-c c i" . string-inflection-cycle)
+         ("C-c c l" . string-inflection-lower-camelcase)
+         ("C-c c c" . string-inflection-camelcase)
+         ("C-c c s" . string-inflection-underscore)
+         ("C-c c u" . string-inflection-upcase)
+         )
+  )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Flyspell Mode for Spelling Corrections
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package flyspell
+  :ensure t
+  :init
+  (eval-when-compile
+    ;; Silence missing function warnings
+    (declare-function flyspell-goto-next-error "flyspell.el")
+    (declare-function flyspell-mode "flyspell.el")
+    (declare-function flyspell-prog-mode "flyspell.el"))
+  (setq flyspell-issue-welcome-flag nil)
+  :config
+  (defun flyspell-check-next-highlighted-word ()
+    "Custom function to spell check next highlighted word."
+    (interactive)
+    (flyspell-goto-next-error)
+    (ispell-word))
+
+  (global-set-key (kbd "<f7>") 'flyspell-buffer)
+  (global-set-key (kbd "<f8>") 'flyspell-correct-previous)
+
+  (add-hook 'text-mode-hook #'flyspell-mode)
+  (add-hook 'prog-mode-hook #'flyspell-prog-mode)
+  (add-hook 'org-mode-hook #'flyspell-mode)
+  )
+(use-package flyspell-correct-ivy
+  :ensure t
+  :after flyspell)
+
+
+;; personal.el ends here
