@@ -2,6 +2,7 @@
 ;; File Comment Header
 ;;;
 
+(prelude-require-package 'use-package)
 (prelude-require-package 'projectile)
 
 (defun git-file-path (path)

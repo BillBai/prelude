@@ -2,6 +2,7 @@
 ;;   Chinese Input
 ;;;;
 
+(prelude-require-package 'use-package)
 (prelude-require-package 'pyim)
 (prelude-require-package 'pyim-basedict)
 (prelude-require-package 'posframe)

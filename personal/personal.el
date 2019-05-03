@@ -14,11 +14,17 @@
 ;; wide as that tab on the display.
 (setq x-stretch-cursor t)
 
-
 ;; re-bind projectile prefix key
 (setq projectile-keymap-prefix (kbd "C-c p"))
 
-;; set column limit to 1--
+;; f6 to swith between frames
+(global-set-key (kbd "<f6>") 'other-frame)
+
+;; use ibuffer instead of helm-buffer-list
+;; restore from the helm everywhere key binding
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+;; set column limit to 100
 (setq whitespace-line-column 100)
 (setq whitespace-style '(face empty tabs lines-tail trailing))
 (global-whitespace-mode t)
@@ -31,23 +37,16 @@
 (when (version<= "26.0.50" emacs-version )
   (global-display-line-numbers-mode))
 
-;; use ibuffer instead of helm-buffer-list
-;; restore from the helm everywhere key binding
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
 ;; quick access to recent files
 (recentf-mode 1) ; keep a list of recently opened files
-
-;; M-x alternative key
-(global-set-key (kbd "<f5>") 'execute-extended-command)
 
 ;; default frame size
 (add-to-list 'default-frame-alist '(height . 67))
 (add-to-list 'default-frame-alist '(width . 200))
 
 ;; prefer gruvbox for now~
-(setq prelude-theme 'gruvbox)
-(load-theme 'gruvbox t)
+(setq prelude-theme 'gruvbox-dark-hard)
+(load-theme 'gruvbox-dark-hard t)
 
 ;;;
 ;;Text Encoding
@@ -189,7 +188,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package markdown-mode
   :ensure t
-:mode (".md" ".markdown"))
+    :mode ("\\.md\\'" "\\.markdown\\'"))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -2,6 +2,7 @@
 ;; C / C++
 ;;;
 
+(prelude-require-package 'use-package)
 (prelude-require-packages '(yasnippet counsel-etags
                             clang-format modern-cpp-font-lock
                             cc-mode cmake-mode counsel counsel-etags
