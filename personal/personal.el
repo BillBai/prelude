@@ -1,18 +1,28 @@
-;;; personal.el
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; personal.el
+;; some misc configs
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; custom packages
-(prelude-require-package 'use-package)
+;;; install some usefull packages
+(prelude-require-packages '(use-package
+                               projectile-ripgrep
+                               ripgrep
+                               editorconfig
+                               auto-package-update
+                               origami
+                               beacon
+                               rainbow-delimiters
+                               ))
 
-;; Some themes
-(prelude-require-package 'solarized-theme)
-(prelude-require-package 'spacemacs-theme)
-(prelude-require-package 'material-theme)
-(prelude-require-package 'gruvbox-theme)
+;; install some themes
+(prelude-require-packages '(solarized-theme
+                               spacemacs-theme
+                               gruvbox-theme))
 
-;; Non-nil means draw block cursor as wide as the glyph under it.
-;; For example, if a block cursor is over a tab, it will be drawn as
-;; wide as that tab on the display.
-(setq x-stretch-cursor t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; shortcuts
+;; some basic key bindings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; re-bind projectile prefix key
 (setq projectile-keymap-prefix (kbd "C-c p"))
@@ -23,36 +33,6 @@
 ;; use ibuffer instead of helm-buffer-list
 ;; restore from the helm everywhere key binding
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
-;; set column limit to 100
-(setq whitespace-line-column 100)
-(setq whitespace-style '(face empty tabs lines-tail trailing))
-(global-whitespace-mode t)
-
-;; disable scroll bar for GUI
-(when (display-graphic-p)
-  (scroll-bar-mode -1))
-
-;; enable global linum mode
-(when (version<= "26.0.50" emacs-version )
-  (global-display-line-numbers-mode))
-
-;; quick access to recent files
-(recentf-mode 1) ; keep a list of recently opened files
-
-;; default frame size
-(add-to-list 'default-frame-alist '(height . 67))
-(add-to-list 'default-frame-alist '(width . 200))
-
-;; prefer gruvbox for now~
-(setq prelude-theme 'gruvbox-dark-hard)
-(load-theme 'gruvbox-dark-hard t)
-
-;;;
-;;Text Encoding
-;;;
-(set-language-environment "UTF-8")
-(set-default-coding-systems 'utf-8)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; multiple-cursors  - https://github.com/magnars/multiple-cursors.el
@@ -76,11 +56,9 @@
 (use-package vlf
   :ensure t)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (eval-after-load "org"
   '(require 'ox-md nil t))
 
@@ -101,15 +79,13 @@
 
 (setq org-agenda-files (file-expand-wildcards "~/Dropbox/GTD/*.org"))
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; cmake-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (prelude-require-package 'cmake-mode)
 (use-package cmake-mode
   :ensure t
-  :mode ("CMakeLists.txt" ".cmake")
+  :mode ("CMakeLists.txt" "\\.cmake\\'")
   :hook (cmake-mode . (lambda ()
                         (add-to-list 'company-backends 'company-cmake)))
   :config
@@ -130,23 +106,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (prelude-require-package 'protobuf-mode)
 (use-package protobuf-mode
-  :mode ("\\.proto"))
-
+  :mode ("\\.proto\\'"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; yaml-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package yaml-mode
   :ensure t
-  :mode (".yml" ".yaml"))
+  :mode ("\\.yml\\'" "\\.yaml\\'"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; json-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package json-mode
   :ensure t
-  :mode (".json" ".imp"))
-
+  :mode ("\\.json\\'"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package: yasnippet
@@ -190,40 +164,12 @@
   :ensure t
     :mode ("\\.md\\'" "\\.markdown\\'"))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Configure GN
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; in .emacs.d/vendor
 (require 'gn-mode)
 (add-to-list 'auto-mode-alist '("\\.gn\\'" . gn-mode))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Project Management
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(prelude-require-package 'neotree)
-
-(setq neo-smart-open t)
-(setq projectile-switch-project-action 'neotree-projectile-action)
-
-(defun neotree-project-dir ()
-  "Open NeoTree using the git root."
-  (interactive)
-  (let ((project-dir (projectile-project-root))
-        (file-name (buffer-file-name)))
-    (neotree-toggle)
-    (if project-dir
-        (if (neo-global--window-exists-p)
-            (progn
-              (neotree-dir project-dir)
-              (neotree-find file-name)))
-      (message "Could not find git project root."))))
-
-(global-set-key [f9] 'neotree-project-dir)
-
-(setq-default neo-show-hidden-files t)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
@@ -232,7 +178,6 @@
 (prelude-require-package 'virtualenvwrapper)
 (venv-initialize-interactive-shells) ;; if you want interactive shell support
 ;; (setq venv-location "~/.wetlands/")
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LaTeX
@@ -248,69 +193,14 @@
                              (setq TeX-show-compilation t)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Reason setup
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(prelude-require-package 'reason-mode)
-(add-to-list 'auto-mode-alist '("\\.re\\'" . reason-mode))
-
-(prelude-require-package 'utop)
-(setq utop-command "opam config exec -- rtop -emacs")
-(add-hook 'reason-mode-hook #'utop-minor-mode) ;; can be included in the hook above as well
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Misc
+;; Nyan mode
+;; Most important part of this file!
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; nyan nyan nyan~~~
 (prelude-require-package 'nyan-mode)
 (nyan-mode)
-
-;; other useful packages
-(prelude-require-packages '(projectile-ripgrep
-                            editorconfig
-                            auto-package-update
-                            origami
-                            beacon
-                            rainbow-delimiters
-                            ))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Automatically compile and save ~/.emacs.el
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun byte-compile-init-files (file)
-  "Automatically compile FILE."
-  (interactive)
-  (save-restriction
-    ;; Suppress the warning when you setq an undefined variable.
-    (if (>= emacs-major-version 23)
-        (setq byte-compile-warnings '(not free-vars obsolete))
-      (setq byte-compile-warnings
-            '(unresolved
-              callargs
-              redefine
-              obsolete
-              noruntime
-              cl-warnings
-              interactive-only)))
-    (byte-compile-file (expand-file-name file)))
-  )
-
-(add-hook
- 'after-save-hook
- (function
-  (lambda ()
-    (if (string= (file-truename "~/.emacs.d/personal/personal.el")
-                 (file-truename (buffer-file-name)))
-        (byte-compile-init-files (file-truename "~/.emacs.d/personal/personal.el"))))))
-
-;; Byte-compile again to ~/.emacs.elc if it is outdated
-(if (file-newer-than-file-p
-     (file-truename "~/.emacs.d/init.el")
-     (file-truename "~/.emacs.d/init.elc"))
-    (byte-compile-init-files "~/.emacs.d/init.el"))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; auto-package-update
@@ -325,7 +215,6 @@
   (auto-package-update-maybe)
   (add-hook 'auto-package-update-before-hook
             (lambda () (message "I will update packages now"))))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Origami - Does code folding, ie hide the body of an
@@ -420,7 +309,6 @@
          )
   )
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flyspell Mode for Spelling Corrections
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -447,9 +335,10 @@
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   (add-hook 'org-mode-hook #'flyspell-mode)
   )
+
 (use-package flyspell-correct-ivy
   :ensure t
   :after flyspell)
 
-
+(provide 'personal)
 ;; personal.el ends here

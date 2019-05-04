@@ -1,3 +1,5 @@
+(require 'projectile)
+
 (defun get-include-guard ()
    "Return a string suitable for use in a C/C++ include guard"
    (let* ((fname (buffer-file-name (current-buffer)))
@@ -23,3 +25,6 @@
         (newline)
         (previous-line 3)
         (set-buffer-modified-p nil)))))
+
+(provide 'include-guard)
+;; include-guard.el ends here

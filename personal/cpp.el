@@ -1,5 +1,5 @@
 ;;;
-;; C / C++
+;; C / C++ configs
 ;;;
 
 (prelude-require-package 'use-package)
@@ -299,43 +299,7 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
   :init
   (defun my/python-mode-hook ()
     (add-to-list 'company-backends 'company-jedi))
-  (add-hook 'python-mode-hook 'my/python-mode-hook)
-  )
+  (add-hook 'python-mode-hook 'my/python-mode-hook))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ycmd setup for chromium based code
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-(prelude-require-packages '())
-
-;; (company-ycmd-setup)
-;; (flycheck-ycmd-setup)
-
-;; ;; Show completions after 0.15 seconds
-;; (setq company-idle-delay 0.15)
-
-;; ;; Activate for editing C++ files
-;; (add-hook 'c++-mode-hook 'ycmd-mode)
-;; (add-hook 'c++-mode-hook 'company-mode)
-;; (add-hook 'c++-mode-hook 'flycheck-mode)
-
-;; ;; Replace the directory information with where you downloaded ycmd to
-;; (set-variable 'ycmd-server-command
-;;               (list "python" (substitute-in-file-name "/home/bill/Developer/ycmd/ycmd/__main__.py")))
-
-;; ;; Edit according to where you have your Chromium/Blink checkout
-;; (add-to-list 'ycmd-extra-conf-whitelist
-;;              (substitute-in-file-name "/home/bill/Workspace/qnox/.ycm_extra_conf.py"))
-
-;; (add-to-list 'ycmd-extra-conf-whitelist
-;;              (substitute-in-file-name "/home/bill/Workspace/chromium-dev/chromium/.ycm_extra_conf.py"))
-
-;; ;; Show flycheck errors in idle-mode as well
-;; (setq ycmd-parse-conditions '(save new-line mode-enabled idle-change))
-
-;; ;; Makes emacs-ycmd less verbose
-;; (setq url-show-status nil)
+(provide 'cpp)
+;; cpp.el ends here

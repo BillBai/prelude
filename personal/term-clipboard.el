@@ -33,3 +33,6 @@
 (global-set-key (kbd "C-c C-w") 'my-cut-to-xclipboard)
 (global-set-key (kbd "C-c M-w") 'my-copy-to-xclipboard)
 (global-set-key (kbd "C-c C-y") 'my-paste-from-xclipboard)
+
+(provide 'term-clipboard)
+;; term-clipboard ends here

@@ -2,8 +2,9 @@
 ;; File Comment Header
 ;;;
 
-(prelude-require-package 'use-package)
-(prelude-require-package 'projectile)
+(require 'projectile)
+(require 'vc)
+(require 'vc-git)
 
 (defun git-file-path (path)
   (let* ((root (file-truename (vc-git-root path)))
@@ -25,7 +26,6 @@
   (insert comment-start "\n"))
 
 
-
 (defun make-self-file-header ()
   "Insert self project header comment for file"
   (interactive)
@@ -36,4 +36,7 @@
   (insert comment-start " * Author: billbai <billbai42@gmail.com>" "\n")
   (insert comment-start " * -----" "\n")
   (insert comment-start " * Copyright (c) " (format-time-string "%Y") " billbai" "\n")
-  (insert comment-start  "\n"))
+    (insert comment-start  "\n"))
+
+(provide 'file-comment-header)
+;; file-comment-header ends here
