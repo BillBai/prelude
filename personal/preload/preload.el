@@ -52,8 +52,8 @@
 (if (fboundp 'tool-bar-mode)
     (tool-bar-mode -1))
 
-;; no menu bar
-(if (fboundp 'menu-bar-mode)
+;; no menu bar for terminal
+(unless (display-graphic-p)
     (menu-bar-mode -1))
 
 ;; enable global linum mode

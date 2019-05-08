@@ -81,6 +81,7 @@
     smartparens
     smartrep
     super-save
+    use-package
     undo-tree
     volatile-highlights
     which-key

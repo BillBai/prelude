@@ -2,15 +2,12 @@
 ;; C / C++ configs
 ;;;
 
-(prelude-require-package 'use-package)
 (prelude-require-packages '(counsel-etags
                                clang-format
                                modern-cpp-font-lock
-                               cc-mode
                                cmake-mode
                                counsel
                                flycheck
-                               google-c-style
                                ycmd
                                company-ycmd
                                flycheck-ycmd))

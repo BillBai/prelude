@@ -4,8 +4,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; install some usefull packages
-(prelude-require-packages '(use-package
-                               projectile-ripgrep
+(prelude-require-packages '(projectile-ripgrep
                                ripgrep
                                editorconfig
                                auto-package-update
