@@ -259,5 +259,15 @@ Version 2019-01-16"
             (when (y-or-n-p (format "file no exist: 「%s」. Create?" $path))
                 (find-file $path ))))))))
 
+(defun xah-copy-rectangle-to-kill-ring (@begin @end)
+    "Copy region as column (rectangle region) to `kill-ring'
+See also: `kill-rectangle', `copy-to-register'.
+URL `http://ergoemacs.org/emacs/emacs_copy_rectangle_text_to_clipboard.html'
+version 2016-07-17"
+    ;; extract-rectangle suggested by YoungFrog, 2012-07-25
+    (interactive "r")
+    (require 'rect)
+    (kill-new (mapconcat 'identity (extract-rectangle @begin @end) "\n")))
+
 (provide 'util)
 ;; util.el ends here
