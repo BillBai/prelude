@@ -1,5 +1,3 @@
-(require 'projectile)
-
 (defun get-include-guard ()
    "Return a string suitable for use in a C/C++ include guard"
    (let* ((fname (buffer-file-name (current-buffer)))

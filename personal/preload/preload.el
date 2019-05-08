@@ -1,7 +1,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; preload configs
-;; some basic tweaks
+;; runs before prelude core
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (setq url-proxy-services
+;;       '(("no_proxy" . "^\\(localhost\\|10.*\\|*.oa.com\\|127.0.0.1\\)")
+;;         ("http" . "web-proxy.tencent.com:8080")
+;;         ("https" . "web-proxy.tencent.com:8080")))
+
+(defvar prelude-theme)
+(setq prelude-theme 'gruvbox-dark-hard)
+
+;;Text Encoding
+(set-language-environment "UTF-8")
+
+;; use emacs-china melpa source
+(setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+                            ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UI Tweaks
@@ -13,17 +28,17 @@
         (setq initial-frame-alist
             '(
                  (tool-bar-lines . 0)
-                 (width . 106) ; chars
+                 (width . 100) ; chars
                  (height . 60) ; lines
-                 (left . 23)
-                 (top . 42)))
+                 (left . 0)
+                 (top . 0)))
         (setq default-frame-alist
             '(
                  (tool-bar-lines . 0)
-                 (width . 106)
+                 (width . 100)
                  (height . 60)
-                 (left . 23)
-                 (top . 42))))
+                 (left . 0)
+                 (top . 0))))
     (progn
         (setq initial-frame-alist '( (tool-bar-lines . 0)))
         (setq default-frame-alist '( (tool-bar-lines . 0)))))
@@ -32,6 +47,14 @@
 ;; disable scroll bar for GUI
 (when (display-graphic-p)
     (scroll-bar-mode -1))
+
+;; NO tool bar
+(if (fboundp 'tool-bar-mode)
+    (tool-bar-mode -1))
+
+;; no menu bar
+(if (fboundp 'menu-bar-mode)
+    (menu-bar-mode -1))
 
 ;; enable global linum mode
 (when (version<= "26.0.50" emacs-version )
@@ -42,15 +65,11 @@
 ;; wide as that tab on the display.p
 (setq x-stretch-cursor t)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; File
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; quick access to recent files
 (recentf-mode 1) ; keep a list of recently opened files
-
-;;Text Encoding
-(set-language-environment "UTF-8")
 
 (provide 'preload)
 ;; preload.el ends here

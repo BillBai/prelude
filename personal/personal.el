@@ -14,11 +14,6 @@
                                rainbow-delimiters
                                ))
 
-;; install some themes
-(prelude-require-packages '(solarized-theme
-                               spacemacs-theme
-                               gruvbox-theme))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; shortcuts
 ;; some basic key bindings
@@ -158,13 +153,6 @@
   :mode ("\\.s\\'"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Use markdown-mode for markdown files
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package markdown-mode
-  :ensure t
-    :mode ("\\.md\\'" "\\.markdown\\'"))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Configure GN
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; in .emacs.d/vendor
@@ -196,7 +184,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Nyan mode
-;; Most important part of this file!
+;; The most important part of this file!
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; nyan nyan nyan~~~
 (prelude-require-package 'nyan-mode)
@@ -292,22 +280,6 @@
 (use-package flycheck-pyflakes
   :ensure t
   :after python)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; string-inflection
-;; used for switching between different cases, eg CamelCase,
-;; lowerCamelCase, snake_case, and SCREAMING_SNAKE_CASE
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package string-inflection
-  :ensure t
-  :defer t
-  :bind (("C-c c i" . string-inflection-cycle)
-         ("C-c c l" . string-inflection-lower-camelcase)
-         ("C-c c c" . string-inflection-camelcase)
-         ("C-c c s" . string-inflection-underscore)
-         ("C-c c u" . string-inflection-upcase)
-         )
-  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flyspell Mode for Spelling Corrections

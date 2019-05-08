@@ -1,7 +1,5 @@
 (prelude-require-package 'cnfonts)
 
-
-
 ;; set fonts
 (cond
  ((string-equal system-type "windows-nt") ; Microsoft Windows
