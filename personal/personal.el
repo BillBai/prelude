@@ -152,11 +152,12 @@
   :mode ("\\.s\\'"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Configure GN
+;; Configure GN and gclient
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; in .emacs.d/vendor
 (require 'gn-mode)
 (add-to-list 'auto-mode-alist '("\\.gn\\'" . gn-mode))
+(add-to-list 'auto-mode-alist '("\\DEPS\\'" . python-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
