@@ -3,10 +3,10 @@
 ;; runs before prelude core
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (setq url-proxy-services
-;;       '(("no_proxy" . "^\\(localhost\\|10.*\\|*.oa.com\\|127.0.0.1\\)")
-;;         ("http" . "web-proxy.tencent.com:8080")
-;;         ("https" . "web-proxy.tencent.com:8080")))
+(setq url-proxy-services
+      '(("no_proxy" . "^\\(localhost\\|10.*\\|*.oa.com\\|127.0.0.1\\)")
+        ("http" . "127.0.0.1:12639")
+        ("https" . "127.0.0.1:12639")))
 
 (defvar prelude-theme)
 (setq prelude-theme 'gruvbox-dark-hard)
