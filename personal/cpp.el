@@ -9,6 +9,7 @@
                                counsel
                                flycheck
                                ycmd
+                               google-c-style
                                company-ycmd
                                flycheck-ycmd))
 
@@ -26,7 +27,6 @@
 ;; Compilation command for C/C++
 (defvar my:compile-command "clang++ -Wall -Wextra -std=c++14")
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clang-format
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -35,9 +35,15 @@
 ;; clang-format -style=google -dump-config > .clang-format
 (use-package clang-format
     :ensure t
-    :bind (("C-c C-f r" . clang-format-region)
-              ("C-c C-f b" . clang-format-buffer))
-    )
+    :bind (("C-c C-f b" . clang-format-buffer)))
+
+(add-hook 'c-mode-common-hook
+          (function (lambda () (local-set-key (kbd "TAB") 'clang-format-region))))
+
+;; google c style, treat .h file as c++
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modern C++ code highlighting
@@ -84,7 +90,8 @@
     ;; Don't warn when TAGS files are large
     (setq large-file-warning-threshold nil)
     ;; How many seconds to wait before rerunning tags for auto-update
-    (setq counsel-etags-update-interval 180)
+    ;; (setq counsel-etags-update-interval 180)
+    (setq counsel-etags-stop-auto-update-tags t)
     ;; Set up auto-update
     (add-hook
         'prog-mode-hook
