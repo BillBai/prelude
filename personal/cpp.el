@@ -5,6 +5,7 @@
 (prelude-require-packages '(counsel-etags
                                clang-format
                                modern-cpp-font-lock
+                               google-c-style
                                cmake-mode
                                counsel
                                flycheck
@@ -36,8 +37,7 @@
 (use-package clang-format
     :ensure t
     :bind (("C-c C-f r" . clang-format-region)
-              ("C-c C-f b" . clang-format-buffer))
-    )
+              ("C-c C-f b" . clang-format-buffer)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modern C++ code highlighting
@@ -55,6 +55,11 @@
 
 ;; enable hide/show of code blocks
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
+
+;; c mode extra settings
+(add-hook 'c-mode-common-hook
+    (function (lambda () (local-set-key (kbd "TAB") 'clang-format-region))))
+(add-hook 'c-mode-common-hook 'google-set-c-style)
 
 ;; Use universal ctags to build the tags database for the project.
 ;; When you first want to build a TAGS database run 'touch TAGS'
