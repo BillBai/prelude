@@ -3,13 +3,17 @@
 ;; runs before prelude core
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (setq url-proxy-services
-;;       '(("no_proxy" . "^\\(localhost\\|10.*\\|*.oa.com\\|127.0.0.1\\)")
-;;         ("http" . "web-proxy.tencent.com:8080")
-;;         ("https" . "web-proxy.tencent.com:8080")))
+(require 'env)
+
+(if is-in-tencent
+    (setq url-proxy-services
+        '(("no_proxy" . "^\\(localhost\\|10.*\\|*.oa.com\\|127.0.0.1\\)")
+             ("http" . "127.0.0.1:12639")
+             ("https" . "127.0.0.1:12639"))))
+
 
 (defvar prelude-theme)
-(setq prelude-theme 'gruvbox-dark-hard)
+(setq prelude-theme 'spacemacs-dark)
 
 ;;Text Encoding
 (set-language-environment "UTF-8")
@@ -28,14 +32,14 @@
         (setq initial-frame-alist
             '(
                  (tool-bar-lines . 0)
-                 (width . 100) ; chars
+                 (width . 233) ; chars
                  (height . 60) ; lines
                  (left . 0)
                  (top . 0)))
         (setq default-frame-alist
             '(
                  (tool-bar-lines . 0)
-                 (width . 100)
+                 (width . 233)
                  (height . 60)
                  (left . 0)
                  (top . 0))))
