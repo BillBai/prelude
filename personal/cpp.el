@@ -3,34 +3,20 @@
 ;;;
 
 (prelude-require-packages '(counsel-etags
-                               clang-format
-                               modern-cpp-font-lock
+                            clang-format
                                google-c-style
                                cmake-mode
                                counsel
                                flycheck
-                               ycmd
-                               google-c-style
-                               company-ycmd
-                               flycheck-ycmd))
+                               lsp-mode
+                               ccls
+                               lsp-ui
+                               company-lsp))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Configuration/Customization:
-;; Defines global variables that are later used to customize and set
-;; up packages.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Specify the ycmd server command and path to the ycmd directory *inside* the
-;; cloned ycmd directory
-(defvar my:ycmd-server-command (list "python3" (file-truename "~/Developer/ycmd/ycmd")))
-(defvar my:ycmd-extra-conf-whitelist (list (file-truename "~/.ycm_extra_conf.py")))
-(defvar my:ycmd-global-config (file-truename "~/.ycm_extra_conf.py"))
 
-;; Compilation command for C/C++
-(defvar my:compile-command "clang++ -Wall -Wextra -std=c++14")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clang-format
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; clang-format can be triggered using C-c C-f
 ;; Create clang-format file using google style
 ;; clang-format -style=google -dump-config > .clang-format
@@ -47,9 +33,27 @@
 (add-hook 'c-mode-common-hook 'google-set-c-style)
 (add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; enable hide/show of code blocks
+(add-hook 'c-mode-common-hook 'hs-minor-mode)
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ccls setup and lsp
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package lsp-mode :commands lsp)
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package company-lsp :commands company-lsp)
+
+(setq ccls-executable (file-truename "~/Developer/ccls/Release/ccls"))
+
+(use-package ccls
+  :hook ((c-mode c++-mode c-mode) .
+         (lambda () (require 'ccls) (lsp))))
+
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modern C++ code highlighting
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package modern-cpp-font-lock
     :ensure t
     :init
@@ -60,14 +64,6 @@
     :config
     (modern-c++-font-lock-global-mode t)
     )
-
-;; enable hide/show of code blocks
-(add-hook 'c-mode-common-hook 'hs-minor-mode)
-
-;; c mode extra settings
-(add-hook 'c-mode-common-hook
-    (function (lambda () (local-set-key (kbd "TAB") 'clang-format-region))))
-(add-hook 'c-mode-common-hook 'google-set-c-style)
 
 ;; Use universal ctags to build the tags database for the project.
 ;; When you first want to build a TAGS database run 'touch TAGS'
@@ -92,6 +88,8 @@
     (add-to-list 'counsel-etags-ignore-directories '"out*")
     (add-to-list 'counsel-etags-ignore-directories '".vscode")
     (add-to-list 'counsel-etags-ignore-filenames '".clang-format")
+    (add-to-list 'counsel-etags-ignore-filenames "TAGS")
+    (add-to-list 'counsel-etags-ignore-filenames "*.json")
     ;; Don't ask before rereading the TAGS files if they have changed
     (setq tags-revert-without-query t)
     ;; Don't warn when TAGS files are large
@@ -111,57 +109,67 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package: ycmd (YouCompleteMeDaemon)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Set up YouCompleteMe for emacs:
-;; https://github.com/Valloric/ycmd
-;; https://github.com/abingham/emacs-ycmd
-(defvar my:python-location (executable-find (nth 0 my:ycmd-server-command)))
-(if (not my:python-location)
-    (message
-        "Could not start YouCompleteMeDaemon because the python executable could
-not be found.\nSpecified executable is: '%s'\nPlease set my:ycmd-server-command
-appropriately in ~/.emacs.el.\n" (nth 0 my:ycmd-server-command)))
-(if (not (file-directory-p (nth 1 my:ycmd-server-command)))
-    (message "Could not YouCompleteMeDaemon because the specified directory does
-not exist.\nSpecified directory is: '%s'
-Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
-        (nth 1 my:ycmd-server-command)))
-(if (and my:python-location
-        (file-directory-p (nth 1 my:ycmd-server-command)))
-    (use-package ycmd
-        :ensure t
-        :init
-        (eval-when-compile
-            ;; Silence missing function warnings
-            (declare-function global-ycmd-mode "ycmd.el"))
-        (add-hook 'after-init-hook #'global-ycmd-mode)
-        :config
-        (progn
-            (set-variable 'ycmd-server-command my:ycmd-server-command)
-            (set-variable 'ycmd-extra-conf-whitelist my:ycmd-extra-conf-whitelist)
-            (set-variable 'ycmd-global-config my:ycmd-global-config)
-            (setq ycmd-force-semantic-completion t)
-            (use-package company-ycmd
-                :ensure t
-                :init
-                (eval-when-compile
-                    ;; Silence missing function warnings
-                    (declare-function company-ycmd-setup "company-ycmd.el"))
-                :config
-                (company-ycmd-setup)
-                )
 
-            (use-package flycheck-ycmd
-                :ensure t
-                :init
-                (add-hook 'c-mode-common-hook 'flycheck-ycmd-setup)
-                )
+;; ;; Specify the ycmd server command and path to the ycmd directory *inside* the
+;; ;; cloned ycmd directory
+;; (defvar my:ycmd-server-command (list "python3" (file-truename "~/Developer/ycmd/ycmd")))
+;; (defvar my:ycmd-extra-conf-whitelist (list (file-truename "~/.ycm_extra_conf.py")))
+;; (defvar my:ycmd-global-config (file-truename "~/.ycm_extra_conf.py"))
 
-            ;; Add displaying the function arguments in mini buffer using El Doc
-            (require 'ycmd-eldoc)
-            (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup)
-            )
-        )
-    )
+;; ;; Compilation command for C/C++
+;; (defvar my:compile-command "clang++ -Wall -Wextra -std=c++14")
+
+;; ;; Set up YouCompleteMe for emacs:
+;; ;; https://github.com/Valloric/ycmd
+;; ;; https://github.com/abingham/emacs-ycmd
+;; (defvar my:python-location (executable-find (nth 0 my:ycmd-server-command)))
+;; (if (not my:python-location)
+;;     (message
+;;         "Could not start YouCompleteMeDaemon because the python executable could
+;; not be found.\nSpecified executable is: '%s'\nPlease set my:ycmd-server-command
+;; appropriately in ~/.emacs.el.\n" (nth 0 my:ycmd-server-command)))
+;; (if (not (file-directory-p (nth 1 my:ycmd-server-command)))
+;;     (message "Could not YouCompleteMeDaemon because the specified directory does
+;; not exist.\nSpecified directory is: '%s'
+;; Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
+;;         (nth 1 my:ycmd-server-command)))
+;; (if (and my:python-location
+;;         (file-directory-p (nth 1 my:ycmd-server-command)))
+;;     (use-package ycmd
+;;         :ensure t
+;;         :init
+;;         (eval-when-compile
+;;             ;; Silence missing function warnings
+;;             (declare-function global-ycmd-mode "ycmd.el"))
+;;         (add-hook 'after-init-hook #'global-ycmd-mode)
+;;         :config
+;;         (progn
+;;             (set-variable 'ycmd-server-command my:ycmd-server-command)
+;;             (set-variable 'ycmd-extra-conf-whitelist my:ycmd-extra-conf-whitelist)
+;;             (set-variable 'ycmd-global-config my:ycmd-global-config)
+;;             (setq ycmd-force-semantic-completion t)
+;;             (use-package company-ycmd
+;;                 :ensure t
+;;                 :init
+;;                 (eval-when-compile
+;;                     ;; Silence missing function warnings
+;;                     (declare-function company-ycmd-setup "company-ycmd.el"))
+;;                 :config
+;;                 (company-ycmd-setup)
+;;                 )
+
+;;             (use-package flycheck-ycmd
+;;                 :ensure t
+;;                 :init
+;;                 (add-hook 'c-mode-common-hook 'flycheck-ycmd-setup)
+;;                 )
+
+;;             ;; Add displaying the function arguments in mini buffer using El Doc
+;;             (require 'ycmd-eldoc)
+;;             (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup)
+;;             )
+;;         )
+;;     )
 
 (provide 'cpp)
 ;; cpp.el ends here
