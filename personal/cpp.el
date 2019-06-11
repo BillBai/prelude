@@ -2,16 +2,14 @@
 ;; C / C++ configs
 ;;;
 
-(prelude-require-packages '(counsel-etags
-                            clang-format
-                               google-c-style
-                               cmake-mode
-                               counsel
-                               flycheck
-                               lsp-mode
-                               ccls
-                               lsp-ui
-                               company-lsp))
+(prelude-require-packages '(clang-format
+                            google-c-style
+                            cmake-mode                               
+                            flycheck
+                            lsp-mode
+                            ccls
+                            lsp-ui
+                            company-lsp))
 
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -44,7 +42,6 @@
 (use-package company-lsp :commands company-lsp)
 
 (setq ccls-executable (file-truename "~/Developer/ccls/Release/ccls"))
-
 (use-package ccls
   :hook ((c-mode c++-mode c-mode) .
          (lambda () (require 'ccls) (lsp))))
@@ -68,43 +65,43 @@
 ;; Use universal ctags to build the tags database for the project.
 ;; When you first want to build a TAGS database run 'touch TAGS'
 ;; in the root directory of your project.
-(use-package counsel-etags
-    :ensure t
-    :init
-    (eval-when-compile
-        ;; Silence missing function warnings
-        (declare-function counsel-etags-virtual-update-tags "counsel-etags.el")
-        (declare-function counsel-etags-guess-program "counsel-etags.el")
-        (declare-function counsel-etags-locate-tags-file "counsel-etags.el"))
-    :bind (
-              ("M-." . counsel-etags-find-tag-at-point)
-              ("M-t" . counsel-etags-grep-symbol-at-point)
-              ("M-s" . counsel-etags-find-tag))
-    :config
-    ;; Ignore files above 800kb
-    (setq counsel-etags-max-file-size 800)
-    ;; Ignore build directories for tagging
-    (add-to-list 'counsel-etags-ignore-directories '"build*")
-    (add-to-list 'counsel-etags-ignore-directories '"out*")
-    (add-to-list 'counsel-etags-ignore-directories '".vscode")
-    (add-to-list 'counsel-etags-ignore-filenames '".clang-format")
-    (add-to-list 'counsel-etags-ignore-filenames "TAGS")
-    (add-to-list 'counsel-etags-ignore-filenames "*.json")
-    ;; Don't ask before rereading the TAGS files if they have changed
-    (setq tags-revert-without-query t)
-    ;; Don't warn when TAGS files are large
-    (setq large-file-warning-threshold nil)
-    ;; How many seconds to wait before rerunning tags for auto-update
-    ;; (setq counsel-etags-update-interval 180)
-    (setq counsel-etags-stop-auto-update-tags t)
-    ;; Set up auto-update
-    (add-hook
-        'prog-mode-hook
-        (lambda () (add-hook 'after-save-hook
-                       (lambda ()
-                           (counsel-etags-virtual-update-tags))))
-        )
-    )
+;; (use-package counsel-etags
+;;     :ensure t
+;;     :init
+;;     (eval-when-compile
+;;         ;; Silence missing function warnings
+;;         (declare-function counsel-etags-virtual-update-tags "counsel-etags.el")
+;;         (declare-function counsel-etags-guess-program "counsel-etags.el")
+;;         (declare-function counsel-etags-locate-tags-file "counsel-etags.el"))
+;;     :bind (
+;;               ("M-." . counsel-etags-find-tag-at-point)
+;;               ("M-t" . counsel-etags-grep-symbol-at-point)
+;;               ("M-s" . counsel-etags-find-tag))
+;;     :config
+;;     ;; Ignore files above 800kb
+;;     (setq counsel-etags-max-file-size 800)
+;;     ;; Ignore build directories for tagging
+;;     (add-to-list 'counsel-etags-ignore-directories '"build*")
+;;     (add-to-list 'counsel-etags-ignore-directories '"out*")
+;;     (add-to-list 'counsel-etags-ignore-directories '".vscode")
+;;     (add-to-list 'counsel-etags-ignore-filenames '".clang-format")
+;;     (add-to-list 'counsel-etags-ignore-filenames "TAGS")
+;;     (add-to-list 'counsel-etags-ignore-filenames "*.json")
+;;     ;; Don't ask before rereading the TAGS files if they have changed
+;;     (setq tags-revert-without-query t)
+;;     ;; Don't warn when TAGS files are large
+;;     (setq large-file-warning-threshold nil)
+;;     ;; How many seconds to wait before rerunning tags for auto-update
+;;     ;; (setq counsel-etags-update-interval 180)
+;;     (setq counsel-etags-stop-auto-update-tags t)
+;;     ;; Set up auto-update
+;;     (add-hook
+;;         'prog-mode-hook
+;;         (lambda () (add-hook 'after-save-hook
+;;                        (lambda ()
+;;                            (counsel-etags-virtual-update-tags))))
+;;         )
+;;     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package: ycmd (YouCompleteMeDaemon)

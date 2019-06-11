@@ -167,6 +167,7 @@
 ;; in .emacs.d/vendor
 (require 'gn-mode)
 (add-to-list 'auto-mode-alist '("\\.gn\\'" . gn-mode))
+(add-to-list 'auto-mode-alist '("\\DEPS\\'" . python-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
