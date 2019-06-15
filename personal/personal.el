@@ -13,6 +13,15 @@
                                rainbow-delimiters
                                ))
 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; whitespace setting
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'whitespace)
+(setq whitespace-line-column 100) ;; limit line length
+(setq whitespace-style '(face lines-tail))
+
+(add-hook 'prog-mode-hook 'whitespace-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; shortcuts
 ;; some basic key bindings
@@ -24,6 +33,7 @@
 ;; f6 to swith between frames
 (global-set-key (kbd "<f6>") 'other-frame)
 
+(global-set-key (kbd "<f7>") 'counsel-M-x)
 ;; use ibuffer instead of helm-buffer-list
 ;; restore from the helm everywhere key binding
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -71,7 +81,7 @@
   ;; make org-mode” syntax color embedded source code
   (setq org-src-fontify-natively t))
 
-(setq org-agenda-files (file-expand-wildcards "~/Dropbox/GTD/*.org"))
+(setq org-agenda-files (file-expand-wildcards "~/Dropbox/org/*.org"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; cmake-mode

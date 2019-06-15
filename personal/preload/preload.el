@@ -3,20 +3,29 @@
 ;; runs before prelude core
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq url-proxy-services
-      '(("no_proxy" . "^\\(localhost\\|10.*\\|*.oa.com\\|127.0.0.1\\)")
-        ("http" . "127.0.0.1:12639")
-        ("https" . "127.0.0.1:12639")))
+(require 'env)
+
+(if is-in-tencent
+    (setq url-proxy-services
+        '(("no_proxy" . "^\\(localhost\\|10.*\\|*.oa.com\\|127.0.0.1\\)")
+             ("http" . "127.0.0.1:12639")
+             ("https" . "127.0.0.1:12639"))))
+
 
 (defvar prelude-theme)
 (setq prelude-theme 'gruvbox-dark-hard)
+
+(global-hl-line-mode 0)
+
+;; (set-face-background 'hl-line "#3e4446")
+;; (set-face-foreground 'highlight nil)
 
 ;;Text Encoding
 (set-language-environment "UTF-8")
 
 ;; use emacs-china melpa source
-(setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
-                            ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+;; (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+;;                             ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UI Tweaks
@@ -28,14 +37,14 @@
         (setq initial-frame-alist
             '(
                  (tool-bar-lines . 0)
-                 (width . 100) ; chars
+                 (width . 233) ; chars
                  (height . 60) ; lines
                  (left . 0)
                  (top . 0)))
         (setq default-frame-alist
             '(
                  (tool-bar-lines . 0)
-                 (width . 100)
+                 (width . 233)
                  (height . 60)
                  (left . 0)
                  (top . 0))))
