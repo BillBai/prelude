@@ -7,8 +7,10 @@
                             cmake-mode                               
                             flycheck
                             lsp-mode
+                            dap-mode
                             ccls
                             lsp-ui
+                            company-box
                             company-lsp))
 
 
@@ -43,24 +45,44 @@
 
 (setq ccls-executable (file-truename "~/Developer/ccls/Release/ccls"))
 (use-package ccls
-  :hook ((c-mode c++-mode c-mode) .
-         (lambda () (require 'ccls) (lsp))))
+  :hook
+  ((c-mode c++-mode c-mode) .
+   (lambda () (require 'ccls) (lsp)))
+  :config
+  (setq ccls-sem-highlight-method 'font-lock)
+  ;; For rainbow semantic highlighting
+  ;; (ccls-use-default-rainbow-sem-highlight)
+  )
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
+
+;; (use-package dap-mode
+;;   :config
+;;   (dap-mode 1)
+;;   (require 'dap-gdb-lldb)
+;;   (use-package dap-ui
+;;     :ensure nil
+;;     :config
+;;     (dap-ui-mode 1))
+;;   )
 
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modern C++ code highlighting
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package modern-cpp-font-lock
-    :ensure t
-    :init
-    (eval-when-compile
-        ;; Silence missing function warnings
-        (declare-function modern-c++-font-lock-global-mode
-            "modern-cpp-font-lock.el"))
-    :config
-    (modern-c++-font-lock-global-mode t)
-    )
+;; (use-package modern-cpp-font-lock
+;;     :ensure t
+;;     :init
+;;     (eval-when-compile
+;;         ;; Silence missing function warnings
+;;         (declare-function modern-c++-font-lock-global-mode
+;;             "modern-cpp-font-lock.el"))
+;;     :config
+;;     (modern-c++-font-lock-global-mode t)
+;;     )
 
 ;; Use universal ctags to build the tags database for the project.
 ;; When you first want to build a TAGS database run 'touch TAGS'
