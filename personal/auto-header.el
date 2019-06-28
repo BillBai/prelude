@@ -1,3 +1,6 @@
+;; Copyright 2019 Tencent. All rights reserved.
+;; Author: billbai <billbai@tencent.com>
+
 (require 'header2)
 
 (if is-in-tencent
@@ -10,8 +13,7 @@
     "Insert current user's name (`user-full-name') as this file's author."
     (insert header-prefix-string "Author: " my/header-author-info  "\n"))
 
-(setq make-header-hook '(header-file-name                            
-                            header-copyright
-                            header-end-line))
+(setq make-header-hook '(header-copyright
+                         my/header-author))
 
 (provide 'auto-header)

@@ -18,14 +18,14 @@
 (global-hl-line-mode 0)
 
 ;; (set-face-background 'hl-line "#3e4446")
-;; (set-face-foreground 'highlight nil)
+(set-face-foreground 'highlight nil)
 
 ;;Text Encoding
 (set-language-environment "UTF-8")
 
 ;; use emacs-china melpa source
-;; (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
-;;                             ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+(setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+                            ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UI Tweaks
