@@ -10,7 +10,6 @@
                             dap-mode
                             ccls
                             lsp-ui
-                            company-box
                             company-lsp))
 
 
@@ -53,10 +52,6 @@
   ;; For rainbow semantic highlighting
   ;; (ccls-use-default-rainbow-sem-highlight)
   )
-
-(use-package company-box
-  :hook (company-mode . company-box-mode))
-
 
 ;; (use-package dap-mode
 ;;   :config
