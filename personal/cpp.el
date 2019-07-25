@@ -7,7 +7,6 @@
                             cmake-mode                               
                             flycheck
                             lsp-mode
-                            dap-mode
                             ccls
                             lsp-ui
                             company-lsp))

@@ -10,6 +10,7 @@
                                auto-package-update
                                origami
                                beacon
+                               string-inflection
                                rainbow-delimiters
                                ))
 
@@ -153,6 +154,13 @@
 (use-package company-yasnippet
   :bind ("C-M-y" . company-yasnippet)
   :after (yasnippet)
+  )
+
+;;; change words CamelCase, snake_case, kebab-case ...
+(use-package string-inflection
+  :bind
+  ("C-c C-_" . string-inflection-underscore)
+  ("C-c C--" . string-inflection-all-cycle)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

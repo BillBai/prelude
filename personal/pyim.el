@@ -7,8 +7,8 @@
                             posframe))
 
 ;; use quelpa to get pyim-greatdict
-(prelude-require-package 'quelpa)
-(quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
+;; (prelude-require-package 'quelpa)
+;; (quelpa '(pyim-greatdict :fetcher github :repo "tumashu/pyim-greatdict"))
 
 (use-package pyim
     :ensure nil
@@ -20,9 +20,9 @@
         :config (pyim-basedict-enable))
 
     ;; greatdict is too slow....
-    (use-package pyim-greatdict
-      :ensure nil
-      :config (pyim-greatdict-enable))
+    ;; (use-package pyim-greatdict
+    ;;   :ensure nil
+    ;;   :config (pyim-greatdict-enable))
 
     ;; 五笔用户使用 wbdict 词库
     ;; (use-package pyim-wbdict
