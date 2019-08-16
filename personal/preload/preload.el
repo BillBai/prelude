@@ -6,10 +6,9 @@
 (require 'env)
 
 (if is-in-tencent
-    (setq url-proxy-services
-        '(("no_proxy" . "^\\(localhost\\|10.*\\|*.oa.com\\|127.0.0.1\\)")
-             ("http" . "127.0.0.1:12639")
-             ("https" . "127.0.0.1:12639"))))
+     (setq url-proxy-services
+         '(("http" . "127.0.0.1:12639")
+              ("https" . "127.0.0.1:12639"))))
 
 
 (defvar prelude-theme)
@@ -24,8 +23,8 @@
 (set-language-environment "UTF-8")
 
 ;; use emacs-china melpa source
-(setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
-                            ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+;; (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+;;                         ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UI Tweaks
