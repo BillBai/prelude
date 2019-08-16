@@ -7,7 +7,6 @@
 (prelude-require-packages '(projectile-ripgrep
                                ripgrep
                                editorconfig
-                               auto-package-update
                                origami
                                beacon
                                string-inflection
@@ -209,20 +208,6 @@
 (nyan-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; auto-package-update
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Auto update packages once a week
-(use-package auto-package-update
-  :ensure t
-  :commands (auto-package-update-maybe)
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe)
-  (add-hook 'auto-package-update-before-hook
-            (lambda () (message "I will update packages now"))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Origami - Does code folding, ie hide the body of an
 ;; if/else/for/function so that you can fit more code on your screen
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -273,62 +258,6 @@
     (declare-function beacon-mode "beacon.el"))
   :config
   (beacon-mode t))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Configure flycheck
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Note: For C++ we use flycheck-ycmd
-(use-package flycheck
-  :ensure t
-  :defer t
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function global-flycheck-mode "flycheck.el"))
-  :config
-  ;; Turn flycheck on everywhere
-  (global-flycheck-mode t)
-  ;; There are issues with company mode and flycheck in terminal mode.
-  ;; This is outlined at:
-  ;; https://github.com/abingham/emacs-ycmd
-  (when (not (display-graphic-p))
-    (setq flycheck-indication-mode nil))
-  )
-(use-package flycheck-pyflakes
-  :ensure t
-  :after python)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Flyspell Mode for Spelling Corrections
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package flyspell
-  :ensure t
-  :init
-  (eval-when-compile
-    ;; Silence missing function warnings
-    (declare-function flyspell-goto-next-error "flyspell.el")
-    (declare-function flyspell-mode "flyspell.el")
-    (declare-function flyspell-prog-mode "flyspell.el"))
-  (setq flyspell-issue-welcome-flag nil)
-  :config
-  (defun flyspell-check-next-highlighted-word ()
-    "Custom function to spell check next highlighted word."
-    (interactive)
-    (flyspell-goto-next-error)
-    (ispell-word))
-
-  (global-set-key (kbd "<f7>") 'flyspell-buffer)
-  (global-set-key (kbd "<f8>") 'flyspell-correct-previous)
-
-  (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'prog-mode-hook #'flyspell-prog-mode)
-  (add-hook 'org-mode-hook #'flyspell-mode)
-  )
-
-(use-package flyspell-correct-ivy
-  :ensure t
-  :after flyspell)
 
 (provide 'personal)
 ;; personal.el ends here

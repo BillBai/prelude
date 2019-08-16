@@ -1,3 +1,4 @@
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   Chinese Input Method
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -64,8 +65,7 @@
     (setq pyim-page-length 7)
 
     :bind
-    (("M-J" . pyim-convert-string-at-point) ;与 pyim-probe-dynamic-english 配合
-     ("C-;" . pyim-delete-word-from-personal-buffer))
+    (("M-J" . pyim-convert-string-at-point))
     )
 
 (provide 'pyim)
