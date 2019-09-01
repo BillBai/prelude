@@ -12,7 +12,7 @@
 
 
 (defvar prelude-theme)
-(setq prelude-theme 'doom-gruvbox)
+(setq prelude-theme 'gruvbox-dark-hard)
 
 (global-hl-line-mode 0)
 
@@ -23,8 +23,8 @@
 (set-language-environment "UTF-8")
 
 ;; use emacs-china melpa source
-;; (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
-;;                         ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+(setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+                        ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UI Tweaks
