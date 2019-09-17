@@ -12,7 +12,7 @@
 
 
 (defvar prelude-theme)
-(setq prelude-theme 'doom-gruvbox)
+(setq prelude-theme 'gruvbox-dark-hard)
 
 (global-hl-line-mode 0)
 
