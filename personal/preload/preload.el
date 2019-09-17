@@ -23,8 +23,8 @@
 (set-language-environment "UTF-8")
 
 ;; use emacs-china melpa source
-;; (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
-;;                         ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+(setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+                        ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UI Tweaks
