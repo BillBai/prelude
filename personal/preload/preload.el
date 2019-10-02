@@ -6,9 +6,9 @@
 (require 'env)
 
 (if is-in-tencent
-    (setq url-proxy-services
-          '(("http" . "127.0.0.1:12639")
-            ("https" . "127.0.0.1:12639"))))
+  (setq url-proxy-services
+    '(("http" . "127.0.0.1:12639")
+	 ("https" . "127.0.0.1:12639"))))
 
 
 (defvar prelude-theme)
@@ -22,10 +22,9 @@
 ;;Text Encoding
 (set-language-environment "UTF-8")
 
-;; use emacs-china melpa source
-(setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
-                        ("melpa" . "http://elpa.emacs-china.org/melpa/")))
-
+;; use tsinghua melpa source
+(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UI Tweaks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
