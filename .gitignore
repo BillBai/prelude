@@ -34,3 +34,5 @@ prelude-cheatsheet.el
 prelude-cheatsheet.aux
 prelude-cheatsheet.log
 .lsp-session*
+liberime.so
+anaconda-mode

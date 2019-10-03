@@ -6,25 +6,20 @@
 (require 'env)
 
 (if is-in-tencent
-  (setq url-proxy-services
-    '(("http" . "127.0.0.1:12639")
-	 ("https" . "127.0.0.1:12639"))))
-
+    (setq url-proxy-services
+        '(("http" . "127.0.0.1:12639")
+          ("https" . "127.0.0.1:12639"))))
 
 (defvar prelude-theme)
 (setq prelude-theme 'gruvbox-dark-hard)
-
-(global-hl-line-mode 0)
-
-;; (set-face-background 'hl-line "#3e4446")
-(set-face-foreground 'highlight nil)
 
 ;;Text Encoding
 (set-language-environment "UTF-8")
 
 ;; use tsinghua melpa source
-(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+;; (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+;;                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; UI Tweaks
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

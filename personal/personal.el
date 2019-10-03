@@ -5,13 +5,19 @@
 
 ;;; install some usefull packages
 (prelude-require-packages '(projectile-ripgrep
-                               ripgrep
-                               editorconfig
-                               origami
-                               beacon
-                               string-inflection
-                               rainbow-delimiters
-                               ))
+                            ripgrep
+                            editorconfig
+                            origami
+                            beacon
+                            string-inflection
+                            rainbow-delimiters
+                            company
+                            diminish
+                            flycheck
+                            ))
+
+;; hide startup screen
+(setq inhibit-startup-screen t)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; whitespace setting
@@ -258,6 +264,22 @@
     (declare-function beacon-mode "beacon.el"))
   :config
   (beacon-mode t))
+
+(use-package diminish
+  :ensure t)
+
+(use-package company
+  :ensure t
+  :diminish company-mode
+  :config
+  (add-hook 'after-init-hook #'global-company-mode))
+
+(use-package flycheck
+  :ensure t
+  :diminish flycheck-mode
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+
 
 (provide 'personal)
 ;; personal.el ends here

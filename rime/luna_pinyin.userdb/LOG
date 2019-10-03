@@ -1,0 +1,6 @@
+2019/10/03-12:57:42.198837 7fc5f9c55700 Log #20: 0 ops saved to Table #21 OK
+2019/10/03-12:57:42.198908 7fc5f9c55700 Archiving /home/billbai/.emacs.d/rime/luna_pinyin.userdb/000020.log: OK
+2019/10/03-12:57:42.198956 7fc5f9c55700 Table #5: 4 entries OK
+2019/10/03-12:57:42.198980 7fc5f9c55700 Table #8: 1 entries OK
+2019/10/03-12:57:42.199069 7fc5f9c55700 Archiving /home/billbai/.emacs.d/rime/luna_pinyin.userdb/MANIFEST-000019: OK
+2019/10/03-12:57:42.210110 7fc5f9c55700 **** Repaired leveldb /home/billbai/.emacs.d/rime/luna_pinyin.userdb; recovered 2 files; 362 bytes. Some data may have been lost. ****

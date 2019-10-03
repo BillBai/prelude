@@ -3,7 +3,7 @@
 ;;;
 
 (prelude-require-packages '(clang-format
-                            google-c-style
+                            google-c-style                            
                             lsp-mode
                             dap-mode
                             lsp-treemacs
@@ -33,24 +33,55 @@
 ;; lsp setup
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package lsp-mode
-  :hook (c++-mode . lsp-deferred)
-  :commands (lsp lsp-deferred))
+  :hook ((c++-mode . lsp-deferred)
+         (c-mode . lsp-deferred))
+  :commands (lsp lsp-deferred)
+  :config
+  ;; `-background-index' requires clangd v8+!
+  (setq lsp-clients-clangd-args '("-j=6" "-background-index" "-log=error"))
+  ;; Prefer using lsp-ui (flycheck) over flymake.
+  (setq lsp-prefer-flymake nil) )
 
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package company-lsp :commands company-lsp)
+(use-package lsp-ui
+  :requires lsp-mode flycheck
+  :ensure t
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable t
+        lsp-ui-doc-use-childframe t
+        lsp-ui-doc-position 'top
+        lsp-ui-doc-include-signature t
+        lsp-ui-sideline-enable nil
+        lsp-ui-flycheck-enable t
+        lsp-ui-flycheck-list-position 'right
+        lsp-ui-flycheck-live-reporting t
+        lsp-ui-peek-enable t
+        lsp-ui-peek-list-width 60
+        lsp-ui-peek-peek-height 25)
+  
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(use-package company-lsp
+  :commands company-lsp
+  :ensure t
+  :config (push 'company-lsp company-backends))
+
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
 (use-package dap-mode)
+
 (use-package dap-lldb)
 
-;; disable ccls for now, use builtin clangd
-
-;; (setq ccls-executable (file-truename "~/Developer/ccls/Release/ccls"))
 ;; (use-package ccls
 ;;   :hook
-;;   ((c-mode c++-mode c-mode) .
+;;   ((c-mode c++-mode objc-mode) .
 ;;    (lambda () (require 'ccls) (lsp)))
 ;;   :config
+;;   (setq ccls-executable (file-truename "~/Developer/ccls/Release/ccls"))
 ;;   (setq ccls-sem-highlight-method 'font-lock)
+;;   (setq lsp-prefer-flymake nil)
+;;   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+  
 ;;   ;; https://github.com/MaskRay/Config/blob/master/home/.config/doom/modules/private/my-cc/autoload.el#L10
 ;;   (defun ccls/callee ()
 ;;     (interactive)
