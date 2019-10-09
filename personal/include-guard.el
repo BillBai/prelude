@@ -1,11 +1,13 @@
 (defun get-include-guard ()
    "Return a string suitable for use in a C/C++ include guard"
    (let* ((fname (buffer-file-name (current-buffer)))
-          (fbasename (file-name-nondirectory buffer-file-name))
-          (inc-guard-base (replace-regexp-in-string"[.-]"
+          (fbasename (file-relative-name fname (projectile-project-root)))
+          (inc-guard-base (replace-regexp-in-string"[.-/]"
                                                     "_"
                                                     fbasename)))
-     (concat (upcase (projectile-project-name))
+     (concat (upcase "src")
+             "_"
+             (upcase (projectile-project-name))
              "_"
              (upcase inc-guard-base)
              "_")))
