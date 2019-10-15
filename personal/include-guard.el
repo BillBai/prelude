@@ -5,9 +5,7 @@
           (inc-guard-base (replace-regexp-in-string"[.-/]"
                                                     "_"
                                                     fbasename)))
-     (concat (upcase "src")
-             "_"
-             (upcase (projectile-project-name))
+     (concat (upcase (projectile-project-name))
              "_"
              (upcase inc-guard-base)
              "_")))
