@@ -5,12 +5,11 @@
           (inc-guard-base (replace-regexp-in-string"[.-/]"
                                                     "_"
                                                     fbasename)))
-     (concat (upcase "src")
-             "_"
-             (upcase (projectile-project-name))
-             "_"
-             (upcase inc-guard-base)
-             "_")))
+     (concat 
+      (upcase (projectile-project-name))
+      "_"
+      (upcase inc-guard-base)
+      "_")))
 
 (defun make-include-guard ()
   (interactive)

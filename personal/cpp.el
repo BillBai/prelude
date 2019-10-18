@@ -39,6 +39,7 @@
   :commands (lsp lsp-deferred)
   :config
   ;; Prefer using lsp-ui (flycheck) over flymake.
+  (setq lsp-enable-file-watchers nil)
   (setq lsp-prefer-flymake nil) )
 
 (use-package lsp-ui
