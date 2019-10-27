@@ -11,7 +11,8 @@
           ("https" . "127.0.0.1:12639"))))
 
 (defvar prelude-theme)
-(setq prelude-theme 'gruvbox-dark-hard)
+;; (setq prelude-theme 'gruvbox-dark-hard)
+(setq prelude-theme 'doom-vibrant)
 
 ;;Text Encoding
 (set-language-environment "UTF-8")

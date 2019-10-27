@@ -37,10 +37,19 @@
   :hook ((c++-mode . lsp-deferred)
          (c-mode . lsp-deferred))
   :commands (lsp lsp-deferred)
+  :custom
+  ;; debug
+  (lsp-print-io nil)
+  (lsp-trace nil)
+  (lsp-print-performance nil)
+  ;; general
+  (lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
+  (lsp-response-timeout 10)
+  (lsp-prefer-flymake t) ;; t(flymake), nil(lsp-ui), or :none
   :config
   ;; Prefer using lsp-ui (flycheck) over flymake.
   (setq lsp-enable-file-watchers nil)
-  (setq lsp-prefer-flymake nil) )
+  )
 
 (use-package lsp-ui
   :requires lsp-mode flycheck
