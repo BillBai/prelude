@@ -14,8 +14,7 @@
                             diminish
                             doom-modeline
                             doom-themes
-                            flycheck
-                            ))
+                            flycheck))
 
 ;; hide startup screen
 (setq inhibit-startup-screen t)
@@ -57,8 +56,7 @@
   :bind (("M-n" . mc/mark-next-like-this)
          ("M-p" . mc/mark-previous-like-this)
          ("C-c C-a" . mc/mark-all-like-this)
-         ("C-c C-e" . mc/edit-lines))
-  )
+         ("C-c C-e" . mc/edit-lines)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; vlf - handle open very large files
@@ -342,8 +340,7 @@
 
   (doom-modeline-def-modeline 'project
     '(bar window-number buffer-default-directory)
-    '(misc-info mu4e github debug battery " " major-mode process))
-  )
+    '(misc-info mu4e github debug battery " " major-mode process)))
 
 (provide 'personal)
 ;; personal.el ends here
