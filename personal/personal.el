@@ -10,6 +10,7 @@
                             beacon
                             string-inflection
                             rainbow-delimiters
+                            hide-mode-line
                             company
                             diminish
                             doom-modeline
